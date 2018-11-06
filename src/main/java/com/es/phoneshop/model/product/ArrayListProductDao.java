@@ -9,23 +9,31 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public Product getProduct(Long id) {
-        throw new RuntimeException("Not implemented");
+        for(Product product : products) {
+            if (id == product.getId()) {
+                return product;
+            }
+        }
+        return null; // exception?
+        //return products.stream().filter(product -> id == product.getId()).findAny().orElse(null);
     }
 
     @Override
     public List<Product> findProducts() {
-        //throw new RuntimeException("Not implemented");
         return products.stream().filter(product -> product.getPrice() != null && product.getStock() > 0).collect(Collectors.toList());
     }
 
     @Override
     public void save(Product product) {
-        //throw new RuntimeException("Not implemented");
         products.add(product);
     }
 
     @Override
     public void delete(Long id) {
-        throw new RuntimeException("Not implemented");
+        for(Product product : products) {
+            if (id == product.getId()) {
+                products.remove(product);
+            }
+        }
     }
 }
