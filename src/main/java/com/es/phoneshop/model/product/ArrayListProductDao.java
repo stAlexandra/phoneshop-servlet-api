@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
-    List<Product> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 
     @Override
     public Product getProduct(Long id) {
         for(Product product : products) {
-            if (id == product.getId()) {
+            if (id.equals(product.getId())) {
                 return product;
             }
         }
@@ -25,13 +25,14 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public void save(Product product) {
+
         products.add(product);
     }
 
     @Override
     public void delete(Long id) {
         for(Product product : products) {
-            if (id == product.getId()) {
+            if (id.equals(product.getId())) {
                 products.remove(product);
             }
         }
