@@ -1,7 +1,9 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +15,17 @@ import java.util.Currency;
 import java.util.List;
 
 public class ProductListPageServlet extends HttpServlet {
+    private ArrayListProductDao productDao;
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        productDao = new ArrayListProductDao();
+        getSampleProducts().stream().forEach(product -> productDao.save(product));
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("products", getSampleProducts());
+        request.setAttribute("products", productDao.findProducts());
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 
