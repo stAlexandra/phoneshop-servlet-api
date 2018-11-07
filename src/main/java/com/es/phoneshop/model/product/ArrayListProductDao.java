@@ -9,13 +9,7 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public Product getProduct(Long id) {
-        for(Product product : products) {
-            if (id.equals(product.getId())) {
-                return product;
-            }
-        }
-        return null; // exception?
-        //return products.stream().filter(product -> id == product.getId()).findAny().orElse(null);
+        return products.stream().filter(product -> product.getId().equals(id)).findFirst().orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -23,10 +17,20 @@ public class ArrayListProductDao implements ProductDao {
         return products.stream().filter(product -> product.getPrice() != null && product.getStock() > 0).collect(Collectors.toList());
     }
 
+    private boolean hasProductWithSameID(Long id){
+        return products.stream().anyMatch(product -> product.getId().equals(id));
+    }
+
     @Override
     public void save(Product product) {
-
-        products.add(product);
+        if(product == null || product.getId() == null){
+            throw new NullPointerException();
+        }
+        else if (this.hasProductWithSameID(product.getId())) {
+            throw new RuntimeException("Duplicated product ID");
+        } else {
+            products.add(product);
+        }
     }
 
     @Override

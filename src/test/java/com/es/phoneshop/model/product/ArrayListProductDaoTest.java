@@ -22,22 +22,50 @@ public class ArrayListProductDaoTest
         assertTrue(productDao.findProducts().isEmpty());
     }
 
-    @Test
-    public void testNotAddingEmptyProducts(){
+    @Test(expected = NullPointerException.class)
+    public void testNotSavingEmptyProducts(){
         Product product = new Product();
         productDao.save(product);
-
-        assertEquals(0, productDao.findProducts().size());
     }
 
     @Test
-    public void testHas1product(){
+    public void testPut1product(){
         Product product = new Product();
+        product.setId(5757L);
         product.setStock(1);
         product.setPrice(new BigDecimal(100));
 
         productDao.save(product);
 
         assertEquals(1, productDao.findProducts().size());
+    }
+
+    @Test
+    public void testGetProduct(){
+        Product product123 = new Product();
+        product123.setId(567L);
+        productDao.save(product123);
+
+        assertEquals(productDao.getProduct(567L).getId(), product123.getId());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetNonExistingProduct(){
+        productDao.getProduct(123L);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testGetDuplicatedProduct(){
+        Product product = new Product();
+        product.setId(123L);
+        Product product1 = new Product();
+        product1.setId(123L);
+
+        assertEquals(product.getId(), product1.getId());
+
+        productDao.save(product);
+        productDao.save(product1);
+
+        productDao.getProduct(123L);
     }
 }
