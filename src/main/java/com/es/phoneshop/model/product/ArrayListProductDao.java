@@ -1,6 +1,7 @@
 package com.es.phoneshop.model.product;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,11 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public Product getProduct(Long id) {
         return products.stream().filter(product -> product.getId().equals(id)).findFirst().orElseThrow(NullPointerException::new);
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return products;
     }
 
     @Override
@@ -35,10 +41,6 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public void delete(Long id) {
-        for(Product product : products) {
-            if (id.equals(product.getId())) {
-                products.remove(product);
-            }
-        }
+        products.removeIf(product -> product.getId().equals(id));
     }
 }

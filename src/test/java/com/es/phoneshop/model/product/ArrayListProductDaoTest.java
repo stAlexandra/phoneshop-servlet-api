@@ -68,4 +68,17 @@ public class ArrayListProductDaoTest
 
         productDao.getProduct(123L);
     }
+
+    @Test
+    public void testDeleteProduct(){
+        Product product = new Product();
+        Long id = 12345L;
+        product.setId(id);
+
+        productDao.save(product);
+        assertEquals(1, productDao.getAllProducts().size());
+
+        productDao.delete(id);
+        assertEquals(0, productDao.getAllProducts().size());
+    }
 }
