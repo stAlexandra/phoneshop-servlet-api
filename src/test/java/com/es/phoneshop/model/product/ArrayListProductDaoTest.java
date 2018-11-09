@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class ArrayListProductDaoTest
 {
@@ -23,14 +24,15 @@ public class ArrayListProductDaoTest
     }
 
     @Test(expected = NullPointerException.class)
-    public void testNotSavingEmptyProducts(){
+    public void testSaveEmptyProduct(){
         Product product = new Product();
         productDao.save(product);
     }
 
     @Test
-    public void testPut1product(){
+    public void testSave1product(){
         Product product = new Product();
+
         product.setId(5757L);
         product.setStock(1);
         product.setPrice(new BigDecimal(100));
@@ -38,6 +40,18 @@ public class ArrayListProductDaoTest
         productDao.save(product);
 
         assertEquals(1, productDao.findProducts().size());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testSaveProductsEqualID_throwRuntimeException(){
+        Product product = new Product();
+        product.setId(987L);
+        Product product1 = new Product();
+        product1.setId(987L);
+        assertEquals(product.getId(), product1.getId());
+
+        productDao.save(product);
+        productDao.save(product1);
     }
 
     @Test
@@ -50,23 +64,8 @@ public class ArrayListProductDaoTest
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetNonExistingProduct(){
-        productDao.getProduct(123L);
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testGetDuplicatedProduct(){
-        Product product = new Product();
-        product.setId(123L);
-        Product product1 = new Product();
-        product1.setId(123L);
-
-        assertEquals(product.getId(), product1.getId());
-
-        productDao.save(product);
-        productDao.save(product1);
-
-        productDao.getProduct(123L);
+    public void testGetNonExistingProduct_throwNPE(){
+        productDao.getProduct(777L);
     }
 
     @Test

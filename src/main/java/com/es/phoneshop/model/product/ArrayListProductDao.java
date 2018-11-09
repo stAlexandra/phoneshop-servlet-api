@@ -32,15 +32,16 @@ public class ArrayListProductDao implements ProductDao {
         if(product == null || product.getId() == null){
             throw new NullPointerException();
         }
-        else if (this.hasProductWithSameID(product.getId())) {
-            throw new RuntimeException("Duplicated product ID");
-        } else {
-            products.add(product);
+        if(!products.isEmpty()){
+            if(hasProductWithSameID(product.getId())){
+                throw new RuntimeException("Duplicated product ID");
+            }
         }
+        products.add(product);
     }
 
     @Override
     public void delete(Long id) {
-        products.removeIf(product -> product.getId().equals(id));
+       products.removeIf(product -> product.getId().equals(id));
     }
 }

@@ -50,4 +50,8 @@ public class ProductListPageServlet extends HttpServlet {
 
         return result;
     }
+
+    protected void setProductDao(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 }
