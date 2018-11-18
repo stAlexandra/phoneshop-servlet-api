@@ -1,6 +1,5 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,23 +24,20 @@ public class ProductListPageServletTest {
     private HttpServletResponse response;
     @Mock
     private RequestDispatcher requestDispatcher;
-    @Mock
-    private ProductDao productDao;
 
-    private ProductListPageServlet servlet = new ProductListPageServlet();
+    private static ProductListPageServlet servlet = new ProductListPageServlet();
 
     @Before
-    public void setup(){
+    public void setup() {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        //when(servlet.getProductDao()).thenReturn(productDao);
     }
 
     @Test
     public void testDoGet() throws ServletException, IOException {
-        servlet.setProductDao(productDao);
+        servlet.init();
         servlet.doGet(request, response);
 
         verify(requestDispatcher).forward(request, response);
+        verify(request).setAttribute(eq("products"), any());
     }
-
 }

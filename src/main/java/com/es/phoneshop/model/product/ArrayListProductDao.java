@@ -6,42 +6,69 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
-    private List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
-    @Override
-    public Product getProduct(Long id) {
-        return products.stream().filter(product -> product.getId().equals(id)).findFirst().orElseThrow(NullPointerException::new);
+    private static volatile ArrayListProductDao arrayListProductDao = null;
+    private static final Object lock = new Object();
+    private ArrayListProductDao() {
+    }
+
+    public static ArrayListProductDao getInstance() {
+        if (arrayListProductDao == null) {
+            synchronized (lock) {
+                if (arrayListProductDao == null) {
+                    arrayListProductDao = new ArrayListProductDao();
+                }
+            }
+        }
+        return arrayListProductDao;
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return products;
+    public Product getProduct(Long id) {
+        synchronized (products){
+            return products.stream()
+                    .filter(product -> product.getId().equals(id))
+                    .findFirst()
+                    .orElseThrow(()->new IllegalArgumentException("No product with id "+ id));
+        }
+
     }
 
     @Override
     public List<Product> findProducts() {
-        return products.stream().filter(product -> product.getPrice() != null && product.getStock() > 0).collect(Collectors.toList());
+        synchronized (products){
+            return products.stream()
+                    .filter(product -> product.getPrice() != null && product.getStock() > 0)
+                    .collect(Collectors.toList());
+        }
+
     }
 
-    private boolean hasProductWithSameID(Long id){
+    private boolean productExist(Long id){
         return products.stream().anyMatch(product -> product.getId().equals(id));
     }
-
     @Override
     public void save(Product product) {
-        if(product == null || product.getId() == null){
-            throw new NullPointerException();
+        Long id = product.getId();
+        if(id == null){
+            throw new IllegalArgumentException("Null product id.");
         }
-        if(!products.isEmpty()){
-            if(hasProductWithSameID(product.getId())){
-                throw new RuntimeException("Duplicated product ID");
+        synchronized (products){
+            if(productExist(id)){
+                throw new RuntimeException("Product with id " + id + "already exists.");
+            } else {
+                products.add(product);
             }
         }
-        products.add(product);
     }
 
     @Override
     public void delete(Long id) {
-       products.removeIf(product -> product.getId().equals(id));
+        synchronized (products) {
+            if(!products.removeIf(product -> product.getId().equals(id))){
+                throw new IllegalArgumentException("No product with id "+ id);
+            }
+        }
     }
 }

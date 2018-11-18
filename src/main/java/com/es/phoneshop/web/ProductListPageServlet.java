@@ -21,7 +21,7 @@ public class ProductListPageServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        productDao = new ArrayListProductDao();
+        productDao = ArrayListProductDao.getInstance();
         getSampleProducts().forEach(product -> productDao.save(product));
     }
 
@@ -49,9 +49,5 @@ public class ProductListPageServlet extends HttpServlet {
         result.add(new Product(13L, "simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg"));
 
         return result;
-    }
-
-    protected void setProductDao(ProductDao productDao) {
-        this.productDao = productDao;
     }
 }
