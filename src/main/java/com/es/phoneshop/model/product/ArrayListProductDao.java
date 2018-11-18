@@ -2,6 +2,7 @@ package com.es.phoneshop.model.product;
 
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +38,18 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public List<Product> findProducts(String query) {
+        String[] queryWords;
+        if(query == null){
+            queryWords = null;
+        } else {
+            queryWords = query.split(" ");
+        }
+
         synchronized (products){
             return products.stream()
                     .filter(product -> product.getPrice() != null && product.getStock() > 0)
-                    .filter(product -> query == null || product.getDescription().contains(query))
+                    .filter(product -> query == null ||
+                            Arrays.stream(queryWords).anyMatch(word ->product.getDescription().contains(word)))
                     .collect(Collectors.toList());
         }
 
