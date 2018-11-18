@@ -36,10 +36,11 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findProducts() {
+    public List<Product> findProducts(String query) {
         synchronized (products){
             return products.stream()
                     .filter(product -> product.getPrice() != null && product.getStock() > 0)
+                    .filter(product -> query == null || product.getDescription().contains(query))
                     .collect(Collectors.toList());
         }
 

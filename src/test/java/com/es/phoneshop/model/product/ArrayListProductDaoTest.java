@@ -37,20 +37,20 @@ public class ArrayListProductDaoTest
 
     @Test
     public void testFindProducts(){
-        assertEquals(4, productDao.findProducts().size());
+        assertEquals(4, productDao.findProducts("").size());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveEmptyProduct(){
         Product product = new Product();
         productDao.save(product);
-        assertEquals(4, productDao.findProducts().size());
+        assertEquals(4, productDao.findProducts("").size());
     }
 
     @Test
     public void testSaveValidProduct(){
         productDao.save(new Product(123L, "str", "smk", new BigDecimal(200), Currency.getInstance("USD"), 100, "https"));
-        assertEquals(5, productDao.findProducts().size());
+        assertEquals(5, productDao.findProducts("").size());
     }
 
     @Test(expected = RuntimeException.class)
@@ -73,10 +73,10 @@ public class ArrayListProductDaoTest
 
     @Test(expected = IllegalArgumentException.class)
     public void testDeleteProduct(){
-        int previousSize = productDao.findProducts().size();
+        int previousSize = productDao.findProducts("").size();
         long id = 3L;
         productDao.delete(id);
-        assertEquals(previousSize - 1, productDao.findProducts().size());
+        assertEquals(previousSize - 1, productDao.findProducts("").size());
         productDao.getProduct(id);
     }
 

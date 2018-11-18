@@ -19,15 +19,16 @@ public class ProductListPageServlet extends HttpServlet {
     private ProductDao productDao;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+    public void init() throws ServletException {
+        super.init();
         productDao = ArrayListProductDao.getInstance();
         getSampleProducts().forEach(product -> productDao.save(product));
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("products", productDao.findProducts());
+        String query = request.getParameter("query");
+        request.setAttribute("products", productDao.findProducts(query));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 
