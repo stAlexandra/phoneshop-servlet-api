@@ -1,7 +1,6 @@
 package com.es.phoneshop.model.product;
 
 import java.util.*;
-
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -58,7 +57,7 @@ public class ArrayListProductDao implements ProductDao {
                 }
             }
 
-            filteredProducts = filteredProducts.stream()
+            return filteredProducts.stream()
                     .sorted((product1, product2) -> {
                         if(queryWords == null) return 0;
 
@@ -68,8 +67,6 @@ public class ArrayListProductDao implements ProductDao {
                         return s2.compareTo(s1);
                     })
                     .collect(Collectors.toList());
-
-            return filteredProducts;
         }
     }
 
@@ -113,6 +110,12 @@ public class ArrayListProductDao implements ProductDao {
             if(!products.removeIf(product -> product.getId().equals(id))){
                 throw new IllegalArgumentException("No product with id "+ id);
             }
+        }
+    }
+
+    public void deleteAll(){
+        synchronized (products){
+            products.clear();
         }
     }
 }
