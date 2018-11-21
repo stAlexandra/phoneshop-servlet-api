@@ -1,8 +1,6 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.ArrayListProductDao;
-import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,16 +19,15 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //super.doGet(request, response);
         String uri = request.getRequestURI();
         int lastSlashIndex = uri.lastIndexOf("/");
         String productId = uri.substring(lastSlashIndex + 1);
-
-        long id = Long.parseLong(productId);
-        Product current = productDao.getProduct(id);
-
-            request.setAttribute("product", current);
+        try {
+            long id = Long.parseLong(productId);
+            request.setAttribute("product", productDao.getProduct(id));
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
-
+        } catch (IllegalArgumentException e){
+            request.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(request, response);
+        }
     }
 }

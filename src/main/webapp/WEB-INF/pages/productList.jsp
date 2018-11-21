@@ -7,7 +7,7 @@
   <head>
     <title>Product List</title>
     <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="<c:url value="/styles/main.css"/>">
   </head>
   <body class="product-list">
     <div>
@@ -26,19 +26,19 @@
           <tr>
             <td>Image</td>
             <td>Description
-                <a href="${pageContext.servletContext.contextPath}/products?query=${param.query}&sort=description&order=desc">
-                    <img src="${pageContext.servletContext.contextPath}/images/down.png"/>
+                <a href="<c:url value="/products?query=${param.query}&sort=description&order=desc"/>">
+                    <img src="<c:url value="/images/down.png"/>">
                 </a>
-                <a href="${pageContext.servletContext.contextPath}/products?query=${param.query}&sort=description&order=asc">
-                    <img src="${pageContext.servletContext.contextPath}/images/up.png"/>
+                <a href="<c:url value="/products?query=${param.query}&sort=description&order=asc"/>">
+                    <img src="<c:url value="/images/up.png"/>">
                 </a>
             </td>
             <td class="price">Price
-                <a href="${pageContext.servletContext.contextPath}/products?query=${param.query}&sort=price&order=desc">
-                    <img src="${pageContext.servletContext.contextPath}/images/down.png"/>
+                <a href="<c:url value="/products?query=${param.query}&sort=price&order=desc"/>">
+                    <img src="<c:url value="/images/down.png"/>">
                 </a>
-                <a href="${pageContext.servletContext.contextPath}/products?query=${param.query}&sort=price&order=asc">
-                    <img src="${pageContext.servletContext.contextPath}/images/up.png"/>
+                <a href="<c:url value="/products?query=${param.query}&sort=price&order=asc"/>">
+                    <img src="<c:url value="/images/up.png"/>">
                 </a>
             </td>
           </tr>

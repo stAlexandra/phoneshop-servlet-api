@@ -10,7 +10,6 @@ import javax.servlet.ServletContextListener;
 import java.math.BigDecimal;
 import java.util.*;
 
-
 public class ProductDemodataServletContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
