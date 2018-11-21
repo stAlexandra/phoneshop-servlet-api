@@ -10,12 +10,9 @@
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/styles/main.css">
   </head>
   <body class="product-list">
-    <header>
-      <a href="${pageContext.servletContext.contextPath}">
-        <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
-        PhoneShop
-      </a>
-    </header>
+    <div>
+        <jsp:include page="header.jsp"/>
+    </div>
     <main>
       <p>
         Welcome to Expert-Soft training!
@@ -59,5 +56,8 @@
         </c:forEach>
       </table>
     </main>
+    <div>
+        <jsp:include page="footer.jsp"/>
+    </div>
   </body>
 </html>
