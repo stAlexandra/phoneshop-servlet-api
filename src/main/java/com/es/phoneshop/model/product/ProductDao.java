@@ -7,4 +7,5 @@ public interface ProductDao {
     List<Product> findProducts(String query, String sortField, String sortOrder);
     void save(Product product);
     void delete(Long id);
+    void deleteAll();
 }

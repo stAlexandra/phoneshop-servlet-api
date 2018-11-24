@@ -51,10 +51,13 @@ public class ArrayListProductDao implements ProductDao {
 
             if(sortField != null && sortOrder != null){
                 if(sortField.equals("description")){
-                    sortByDescription(filteredProducts, sortOrder);
+                    //sortByDescription(filteredProducts, sortOrder);
+                    filteredProducts.sort(Comparator.comparing(Product::getDescription));
                 } else if(sortField.equals("price")) {
-                    sortByPrice(filteredProducts, sortOrder);
+                    //sortByPrice(filteredProducts, sortOrder);
+                    filteredProducts.sort(Comparator.comparing(Product::getPrice));
                 }
+                if(sortOrder.equals("desc")) Collections.reverse(filteredProducts);
             }
 
             return filteredProducts.stream()
@@ -70,21 +73,21 @@ public class ArrayListProductDao implements ProductDao {
         }
     }
 
-    private void sortByDescription(List<Product> products, String order) {
-        if (order.equals("asc")) {
-            products.sort(Comparator.comparing(Product::getDescription));
-        } else {
-            products.sort(Comparator.comparing(Product::getDescription).reversed());
-        }
-    }
-
-    private void sortByPrice(List<Product> products, String order) {
-        if(order.equals("asc")) {
-            products.sort(Comparator.comparing(Product::getPrice));
-        } else {
-            products.sort(Comparator.comparing(Product::getPrice).reversed());
-        }
-    }
+//    private void sortByDescription(List<Product> products, String order) {
+//        if (order.equals("asc")) {
+//            products.sort(Comparator.comparing(Product::getDescription));
+//        } else {
+//            products.sort(Comparator.comparing(Product::getDescription).reversed());
+//        }
+//    }
+//
+//    private void sortByPrice(List<Product> products, String order) {
+//        if(order.equals("asc")) {
+//            products.sort(Comparator.comparing(Product::getPrice));
+//        } else {
+//            products.sort(Comparator.comparing(Product::getPrice).reversed());
+//        }
+//    }
 
     @Override
     public void save(Product product) {
@@ -113,6 +116,7 @@ public class ArrayListProductDao implements ProductDao {
         }
     }
 
+    @Override
     public void deleteAll(){
         synchronized (products){
             products.clear();

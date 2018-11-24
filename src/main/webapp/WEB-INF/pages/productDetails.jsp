@@ -14,7 +14,7 @@
 <head>
     <title>${product.description}</title>
     <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="<c:url value="/styles/main.css"/>">
 </head>
 <body class="product-list">
 <div>

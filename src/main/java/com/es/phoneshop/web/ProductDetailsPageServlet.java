@@ -1,6 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.model.product.ProductDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ProductDetailsPageServlet extends HttpServlet {
-    private ArrayListProductDao productDao;
+    private ProductDao productDao;
 
     @Override
     public void init() throws ServletException {
@@ -27,7 +28,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
             request.setAttribute("product", productDao.getProduct(id));
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
         } catch (IllegalArgumentException e){
-            request.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(request, response);
+            response.sendError(404);
         }
     }
 }

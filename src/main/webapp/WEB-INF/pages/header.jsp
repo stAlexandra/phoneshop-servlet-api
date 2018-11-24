@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <header>
-    <a href="${pageContext.servletContext.contextPath}">
-        <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
+    <a href="<c:url value=""/>">
+        <img src="<c:url value="/images/logo.svg"/>">
         PhoneShop
     </a>
 </header>

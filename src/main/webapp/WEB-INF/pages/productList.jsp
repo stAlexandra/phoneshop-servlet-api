@@ -18,7 +18,7 @@
         Welcome to Expert-Soft training!
       </p>
       <form>
-        <input name = "query" value="${param.query}">
+        <input name = "query" value="${param.query}"/>
         <button>Search</button>
       </form>
       <table>
@@ -26,19 +26,39 @@
           <tr>
             <td>Image</td>
             <td>Description
-                <a href="<c:url value="/products?query=${param.query}&sort=description&order=desc"/>">
-                    <img src="<c:url value="/images/down.png"/>">
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="description"/>
+                        <c:param name="order" value="desc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/down.png"/>"/>
                 </a>
-                <a href="<c:url value="/products?query=${param.query}&sort=description&order=asc"/>">
-                    <img src="<c:url value="/images/up.png"/>">
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="description"/>
+                        <c:param name="order" value="asc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/up.png"/>"/>
                 </a>
             </td>
             <td class="price">Price
-                <a href="<c:url value="/products?query=${param.query}&sort=price&order=desc"/>">
-                    <img src="<c:url value="/images/down.png"/>">
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="price"/>
+                        <c:param name="order" value="desc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/down.png"/>"/>
                 </a>
-                <a href="<c:url value="/products?query=${param.query}&sort=price&order=asc"/>">
-                    <img src="<c:url value="/images/up.png"/>">
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="price"/>
+                        <c:param name="order" value="asc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/up.png"/>"/>
                 </a>
             </td>
           </tr>
