@@ -27,6 +27,8 @@ public class ProductDetailsPageServlet extends HttpServlet {
             long id = Long.parseLong(productId);
             request.setAttribute("product", productDao.getProduct(id));
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
+        } catch (NumberFormatException e) { //
+            response.sendError(404);
         } catch (IllegalArgumentException e){
             response.sendError(404);
         }
