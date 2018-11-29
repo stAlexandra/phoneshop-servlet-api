@@ -50,8 +50,8 @@ public class ArrayListProductDaoTest
     }
 
     @Test
-    public void testFindSortByRelevance(){
-        assertEquals("Samsung Galaxy S II", productDao.findProducts("Samsung Galaxy S II", "description", "asc").get(0).getDescription());
+    public void testFindSortedByDescription(){
+        assertEquals("Apple iPhone", productDao.findProducts("", "description", "asc").get(0).getDescription());
     }
 
     @Test

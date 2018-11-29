@@ -1,6 +1,7 @@
 package com.es.phoneshop.model.product;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -36,58 +37,42 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public List<Product> findProducts(String query, String sortField, String sortOrder) {
-        String[] queryWords;
-        if(query == null){
-            queryWords = null;
-        } else {
-            queryWords = query.split(" ");
-        }
-
         synchronized (products){
-            List<Product> filteredProducts = products.stream()
+            List<Product> result = products.stream()
                     .filter(product -> product.getPrice() != null && product.getStock() > 0)
-                    .filter(product -> query == null || Arrays.stream(queryWords).anyMatch(word -> product.getDescription().contains(word)))
                     .collect(Collectors.toList());
 
-            if(sortField != null && sortOrder != null){
-                if(sortField.equals("description")){
-                    //sortByDescription(filteredProducts, sortOrder);
-                    filteredProducts.sort(Comparator.comparing(Product::getDescription));
-                } else if(sortField.equals("price")) {
-                    //sortByPrice(filteredProducts, sortOrder);
-                    filteredProducts.sort(Comparator.comparing(Product::getPrice));
-                }
-                if(sortOrder.equals("desc")) Collections.reverse(filteredProducts);
+            if(query != null) {
+                String[] queryWords = query.split(" ");
+                result = result.stream()
+                        .filter(product -> Arrays.stream(queryWords).anyMatch(word -> product.getDescription().contains(word)))
+                        .sorted((product1, product2) -> {
+                            Long numMatches1 = Arrays.stream(queryWords).filter(word -> product1.getDescription().contains(word)).count();
+                            Long numMatches2 = Arrays.stream(queryWords).filter(word -> product2.getDescription().contains(word)).count();
+
+                            return numMatches2.compareTo(numMatches1);
+                        })
+                        .collect(Collectors.toList());
             }
 
-            return filteredProducts.stream()
-                    .sorted((product1, product2) -> {
-                        if(queryWords == null) return 0;
+            if(sortField != null && sortOrder != null){
+                sort(result, sortField, sortOrder);
+            }
 
-                        Long s1 = Arrays.stream(queryWords).filter(word -> product1.getDescription().contains(word)).count();
-                        Long s2 = Arrays.stream(queryWords).filter(word -> product2.getDescription().contains(word)).count();
-
-                        return s2.compareTo(s1);
-                    })
-                    .collect(Collectors.toList());
+            return result;
         }
     }
 
-//    private void sortByDescription(List<Product> products, String order) {
-//        if (order.equals("asc")) {
-//            products.sort(Comparator.comparing(Product::getDescription));
-//        } else {
-//            products.sort(Comparator.comparing(Product::getDescription).reversed());
-//        }
-//    }
-//
-//    private void sortByPrice(List<Product> products, String order) {
-//        if(order.equals("asc")) {
-//            products.sort(Comparator.comparing(Product::getPrice));
-//        } else {
-//            products.sort(Comparator.comparing(Product::getPrice).reversed());
-//        }
-//    }
+    private void sort(List<Product> products, String field, String order){
+        if(field != null && order != null){
+            if(field.equals("description")){
+                products.sort(Comparator.comparing(Product::getDescription));
+            } else if(field.equals("price")) {
+                products.sort(Comparator.comparing(Product::getPrice));
+            }
+            if(order.equals("desc")) Collections.reverse(products);
+        }
+    }
 
     @Override
     public void save(Product product) {
@@ -103,6 +88,7 @@ public class ArrayListProductDao implements ProductDao {
             }
         }
     }
+
     private boolean productExist(Long id){
         return products.stream().anyMatch(product -> product.getId().equals(id));
     }
