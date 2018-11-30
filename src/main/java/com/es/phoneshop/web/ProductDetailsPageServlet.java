@@ -1,7 +1,12 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.product.cart.CartService;
+import com.es.phoneshop.model.product.cart.CartServiceImpl;
+import com.es.phoneshop.model.product.exception.NoSuchProductException;
+import com.es.phoneshop.model.product.exception.NotEnoughStockException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,26 +16,54 @@ import java.io.IOException;
 
 public class ProductDetailsPageServlet extends HttpServlet {
     private ProductDao productDao;
-
+    private CartService cartService;
     @Override
     public void init() throws ServletException {
         super.init();
         productDao = ArrayListProductDao.getInstance();
+        cartService = CartServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            Product product = loadProduct(request);
+            request.setAttribute("product", product);
+            request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
+        } catch (NoSuchProductException | NumberFormatException e){
+            response.sendError(404);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Product product = loadProduct(request);
+        request.setAttribute("product", product);
+        request.setAttribute("cart", cartService.getCart().getCartItems());
+
+        Integer quantity = null;
+        try {
+            String quantityString = request.getParameter("quantity");
+            quantity = Integer.parseUnsignedInt(quantityString);
+        } catch (NumberFormatException e){
+            request.setAttribute("quantityError", "Not a number!");
+        }
+        if(quantity != null){
+            try {
+                cartService.addToCart(product, quantity);
+                request.setAttribute("successMessage", "Added to cart successfully!");
+            } catch (NotEnoughStockException e){
+                request.setAttribute("quantityError", "Not enough stock!");
+            }
+        }
+        request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
+    }
+
+    private Product loadProduct(HttpServletRequest request) throws NumberFormatException, NoSuchProductException {
         String uri = request.getRequestURI();
         int lastSlashIndex = uri.lastIndexOf("/");
         String productId = uri.substring(lastSlashIndex + 1);
-        try {
-            long id = Long.parseLong(productId);
-            request.setAttribute("product", productDao.getProduct(id));
-            request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
-        } catch (NumberFormatException e) { //
-            response.sendError(404);
-        } catch (IllegalArgumentException e){
-            response.sendError(404);
-        }
+        long id = Long.parseLong(productId);
+        return productDao.getProduct(id);
     }
 }

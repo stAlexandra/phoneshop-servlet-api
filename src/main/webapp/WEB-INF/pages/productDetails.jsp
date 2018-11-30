@@ -21,8 +21,9 @@
     <jsp:include page="/WEB-INF/pages/header.jsp"/>
 </div>
 <main>
+    <br>cart:${cart}<br>
     <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
-    <table>
+    <table width="320">
         <tr>
             <td>Description</td>
             <td>${product.description}</td>
@@ -34,6 +35,16 @@
             </td>
         </tr>
     </table>
+    <form method="post">
+        <br>Quantity: <input name="quantity"/>
+        <button>Add to cart</button>
+        <c:if test="${not empty successMessage}">
+            <p class="success">${successMessage}</p>
+        </c:if>
+        <c:if test="${not empty quantityError}">
+            <p class="error">${quantityError}</p>
+        </c:if>
+    </form>
 </main>
 <div>
     <jsp:include page="/WEB-INF/pages/footer.jsp"/>

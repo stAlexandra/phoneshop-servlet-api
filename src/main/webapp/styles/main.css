@@ -27,7 +27,16 @@ td {
 img.product-tile {
   max-width: 64px;
 }
-
+body main{
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+.success {
+  color: green;
+}
+.error {
+  color: red;
+}
 /* Page specific styles */
 body.product-list {
 
