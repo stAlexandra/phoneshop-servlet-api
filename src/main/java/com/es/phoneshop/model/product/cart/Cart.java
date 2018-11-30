@@ -13,4 +13,11 @@ public class Cart {
     public List<CartItem> getCartItems() {
         return items;
     }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "items=" + items +
+                '}';
+    }
 }

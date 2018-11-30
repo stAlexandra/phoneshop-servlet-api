@@ -1,7 +1,8 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.model.product.exception.NoSuchProductException;
+
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -29,9 +30,8 @@ public class ArrayListProductDao implements ProductDao {
             return products.stream()
                     .filter(product -> product.getId().equals(id))
                     .findFirst()
-                    .orElseThrow(()->new IllegalArgumentException("No product with id "+ id));
+                    .orElseThrow(()->new NoSuchProductException("No product with id "+ id));
         }
-
     }
 
 
