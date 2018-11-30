@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ProductListPageServlet extends HttpServlet {
+public class ProductDetailsPageServlet extends HttpServlet {
     private ProductDao productDao;
 
     @Override
@@ -20,11 +20,17 @@ public class ProductListPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String query = request.getParameter("query");
-        String sortField = request.getParameter("sort");
-        String sortOrder = request.getParameter("order");
-
-        request.setAttribute("products", productDao.findProducts(query, sortField, sortOrder));
-        request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        String uri = request.getRequestURI();
+        int lastSlashIndex = uri.lastIndexOf("/");
+        String productId = uri.substring(lastSlashIndex + 1);
+        try {
+            long id = Long.parseLong(productId);
+            request.setAttribute("product", productDao.getProduct(id));
+            request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
+        } catch (NumberFormatException e) { //
+            response.sendError(404);
+        } catch (IllegalArgumentException e){
+            response.sendError(404);
+        }
     }
 }

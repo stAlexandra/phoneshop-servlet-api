@@ -7,25 +7,60 @@
   <head>
     <title>Product List</title>
     <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="<c:url value="/styles/main.css"/>">
   </head>
   <body class="product-list">
-    <header>
-      <a href="${pageContext.servletContext.contextPath}">
-        <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
-        PhoneShop
-      </a>
-    </header>
+    <div>
+        <jsp:include page="header.jsp"/>
+    </div>
     <main>
       <p>
         Welcome to Expert-Soft training!
       </p>
+      <form>
+        <input name = "query" value="${param.query}"/>
+        <button>Search</button>
+      </form>
       <table>
         <thead>
           <tr>
             <td>Image</td>
-            <td>Description</td>
-            <td class="price">Price</td>
+            <td>Description
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="description"/>
+                        <c:param name="order" value="desc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/down.png"/>"/>
+                </a>
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="description"/>
+                        <c:param name="order" value="asc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/up.png"/>"/>
+                </a>
+            </td>
+            <td class="price">Price
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="price"/>
+                        <c:param name="order" value="desc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/down.png"/>"/>
+                </a>
+                <a href="
+                    <c:url value="/products">
+                        <c:param name="query" value="${param.query}"/>
+                        <c:param name="sort" value="price"/>
+                        <c:param name="order" value="asc"/>
+                    </c:url>">
+                    <img src="<c:url value="/images/up.png"/>"/>
+                </a>
+            </td>
           </tr>
         </thead>
         <c:forEach var="product" items="${products}">
@@ -41,5 +76,8 @@
         </c:forEach>
       </table>
     </main>
+    <div>
+        <jsp:include page="footer.jsp"/>
+    </div>
   </body>
 </html>

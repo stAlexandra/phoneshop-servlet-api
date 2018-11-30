@@ -1,7 +1,6 @@
 package com.es.phoneshop.model.product;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,10 +12,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class ArrayListProductDaoTest
 {
-    private static ProductDao productDao;
+    private ArrayListProductDao productDao;
 
-    @BeforeClass
-    public static void setUp() {
+    @Before
+    public void setUp() {
         productDao = ArrayListProductDao.getInstance();
         List<Product> productList = new ArrayList<>();
 
@@ -29,6 +28,11 @@ public class ArrayListProductDaoTest
         productList.forEach(product -> productDao.save(product));
     }
 
+    @After
+    public void tearDown(){
+        productDao.deleteAll();
+    }
+
     @Test
     public void testGetInstance() {
         ArrayListProductDao instance = ArrayListProductDao.getInstance();
@@ -37,20 +41,35 @@ public class ArrayListProductDaoTest
 
     @Test
     public void testFindProducts(){
-        assertEquals(4, productDao.findProducts().size());
+        assertEquals(4, productDao.findProducts("", "", "").size());
+    }
+
+    @Test
+    public void testFindSamsung(){
+        assertEquals(3, productDao.findProducts("Samsung", "", "").size());
+    }
+
+    @Test
+    public void testFindSortedByDescription(){
+        assertEquals("Apple iPhone", productDao.findProducts("", "description", "asc").get(0).getDescription());
+    }
+
+    @Test
+    public void testFindMostExpensive(){
+        assertEquals("Samsung Galaxy S III", productDao.findProducts("", "price", "desc").get(0).getDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveEmptyProduct(){
         Product product = new Product();
         productDao.save(product);
-        assertEquals(4, productDao.findProducts().size());
+        assertEquals(4, productDao.findProducts("", "" , "").size());
     }
 
     @Test
     public void testSaveValidProduct(){
         productDao.save(new Product(123L, "str", "smk", new BigDecimal(200), Currency.getInstance("USD"), 100, "https"));
-        assertEquals(5, productDao.findProducts().size());
+        assertEquals(5, productDao.findProducts("", "" ,"").size());
     }
 
     @Test(expected = RuntimeException.class)
@@ -73,10 +92,10 @@ public class ArrayListProductDaoTest
 
     @Test(expected = IllegalArgumentException.class)
     public void testDeleteProduct(){
-        int previousSize = productDao.findProducts().size();
-        long id = 3L;
+        int previousSize = productDao.findProducts("", "", "").size();
+        long id = 4L;
         productDao.delete(id);
-        assertEquals(previousSize - 1, productDao.findProducts().size());
+        assertEquals(previousSize - 1, productDao.findProducts("", "", "").size());
         productDao.getProduct(id);
     }
 
