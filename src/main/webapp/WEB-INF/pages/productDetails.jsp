@@ -35,11 +35,11 @@
             </td>
         </tr>
     </table>
-    <form method="post">
-        <br>Quantity: <input name="quantity"/>
+    <form method="post" action="<c:url value="/products/${product.id}"/>">
+        <br>Quantity: <input class="number" name="quantity" value="${not empty param.quantity ? param.quantity : 1}"/>
         <button>Add to cart</button>
-        <c:if test="${not empty successMessage}">
-            <p class="success">${successMessage}</p>
+        <c:if test="${not empty param.message}">
+            <p class="success">Added to cart successfully!</p>
         </c:if>
         <c:if test="${not empty quantityError}">
             <p class="error">${quantityError}</p>

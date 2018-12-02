@@ -3,6 +3,7 @@ package com.es.phoneshop.model.product.cart;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.exception.NotEnoughStockException;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class CartServiceImpl implements CartService {
@@ -20,10 +21,17 @@ public class CartServiceImpl implements CartService {
         return instance;
     }
 
-    private Cart cart = new Cart();
+    private static final String CART_ATTRIBUTE = "cart";
+    private Cart cart;
 
     @Override
-    public Cart getCart(){
+    public Cart getCart(HttpSession session) {
+        Cart cart = (Cart)session.getAttribute(CART_ATTRIBUTE);
+        if(cart == null){
+            cart = new Cart();
+            session.setAttribute(CART_ATTRIBUTE, cart);
+        }
+        this.cart = cart;
         return cart;
     }
 
