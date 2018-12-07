@@ -1,10 +1,11 @@
-package com.es.phoneshop.model.product.cart;
+package com.es.phoneshop.service;
 
 import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.model.product.cart.Cart;
 
 import javax.servlet.http.HttpSession;
 
 public interface CartService {
     Cart getCart(HttpSession session);
-    void addToCart(Product product, Integer quantity);
+    void addToCart(Cart cart, Product product, Integer quantity);
 }

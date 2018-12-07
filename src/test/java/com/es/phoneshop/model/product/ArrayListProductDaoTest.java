@@ -1,5 +1,6 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.model.product.exception.NoSuchProductException;
 import org.junit.*;
 
 import java.math.BigDecimal;
@@ -41,35 +42,35 @@ public class ArrayListProductDaoTest
 
     @Test
     public void testFindProducts(){
-        assertEquals(4, productDao.findProducts("", "", "").size());
+        assertEquals(4, productDao.findProducts("", "", false).size());
     }
 
     @Test
     public void testFindSamsung(){
-        assertEquals(3, productDao.findProducts("Samsung", "", "").size());
+        assertEquals(3, productDao.findProducts("Samsung", "", false).size());
     }
 
     @Test
     public void testFindSortedByDescription(){
-        assertEquals("Apple iPhone", productDao.findProducts("", "description", "asc").get(0).getDescription());
+        assertEquals("Apple iPhone", productDao.findProducts("", "description", true).get(0).getDescription());
     }
 
     @Test
     public void testFindMostExpensive(){
-        assertEquals("Samsung Galaxy S III", productDao.findProducts("", "price", "desc").get(0).getDescription());
+        assertEquals("Samsung Galaxy S III", productDao.findProducts("", "price", false).get(0).getDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveEmptyProduct(){
         Product product = new Product();
         productDao.save(product);
-        assertEquals(4, productDao.findProducts("", "" , "").size());
+        assertEquals(4, productDao.findProducts("", "" , false).size());
     }
 
     @Test
     public void testSaveValidProduct(){
         productDao.save(new Product(123L, "str", "smk", new BigDecimal(200), Currency.getInstance("USD"), 100, "https"));
-        assertEquals(5, productDao.findProducts("", "" ,"").size());
+        assertEquals(5, productDao.findProducts("", "" ,false).size());
     }
 
     @Test(expected = RuntimeException.class)
@@ -84,22 +85,22 @@ public class ArrayListProductDaoTest
         assertNotNull(product);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NoSuchProductException.class)
     public void testGetProductNotExist(){
         long id = 999L;
         productDao.getProduct(id);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NoSuchProductException.class)
     public void testDeleteProduct(){
-        int previousSize = productDao.findProducts("", "", "").size();
+        int previousSize = productDao.findProducts("", "", false).size();
         long id = 4L;
         productDao.delete(id);
-        assertEquals(previousSize - 1, productDao.findProducts("", "", "").size());
+        assertEquals(previousSize - 1, productDao.findProducts("", "", false).size());
         productDao.getProduct(id);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NoSuchProductException.class)
     public void testDeleteProductNotExist(){
         long id = 888L;
         productDao.delete(id);

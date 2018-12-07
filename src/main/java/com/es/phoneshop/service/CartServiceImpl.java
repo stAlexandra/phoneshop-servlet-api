@@ -1,6 +1,8 @@
-package com.es.phoneshop.model.product.cart;
+package com.es.phoneshop.service;
 
 import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.model.product.cart.Cart;
+import com.es.phoneshop.model.product.cart.CartItem;
 import com.es.phoneshop.model.product.exception.NotEnoughStockException;
 
 import javax.servlet.http.HttpSession;
@@ -21,8 +23,7 @@ public class CartServiceImpl implements CartService {
         return instance;
     }
 
-    private static final String CART_ATTRIBUTE = "cart";
-    private Cart cart;
+    public static final String CART_ATTRIBUTE = "cart";
 
     @Override
     public Cart getCart(HttpSession session) {
@@ -31,12 +32,11 @@ public class CartServiceImpl implements CartService {
             cart = new Cart();
             session.setAttribute(CART_ATTRIBUTE, cart);
         }
-        this.cart = cart;
         return cart;
     }
 
     @Override
-    public void addToCart(Product product, Integer quantity) throws NotEnoughStockException{
+    public void addToCart(Cart cart, Product product, Integer quantity) throws NotEnoughStockException{
         int currentStock = product.getStock();
         if(currentStock < quantity) throw new NotEnoughStockException();
 
