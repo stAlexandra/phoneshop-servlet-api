@@ -3,32 +3,38 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
-import com.es.phoneshop.model.product.cart.CartService;
-import com.es.phoneshop.model.product.cart.CartServiceImpl;
+import com.es.phoneshop.model.product.cart.Cart;
+import com.es.phoneshop.service.CartService;
+import com.es.phoneshop.service.CartServiceImpl;
 import com.es.phoneshop.model.product.exception.NoSuchProductException;
 import com.es.phoneshop.model.product.exception.NotEnoughStockException;
+import com.es.phoneshop.service.DataLoader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class ProductDetailsPageServlet extends HttpServlet {
     private ProductDao productDao;
     private CartService cartService;
+    private DataLoader dataLoader;
+
+    private static final String QUANTITY_ERROR_ATTRIBUTE = "quantityError";
+
     @Override
     public void init() throws ServletException {
         super.init();
         productDao = ArrayListProductDao.getInstance();
         cartService = CartServiceImpl.getInstance();
+        dataLoader = new DataLoader();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Product product = loadProduct(request);
+            Product product = dataLoader.loadProduct(request, productDao);
             request.setAttribute("product", product);
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
         } catch (NoSuchProductException | NumberFormatException e){
@@ -38,36 +44,28 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Product product = loadProduct(request);
-        HttpSession httpSession = request.getSession();
+        Product product = dataLoader.loadProduct(request, productDao);
+        Cart cart = cartService.getCart(request.getSession());
+
         request.setAttribute("product", product);
-        request.setAttribute("cart", cartService.getCart(httpSession).getCartItems());
+        request.setAttribute("cart", cart);
 
         Integer quantity = null;
         try {
-            String quantityString = request.getParameter("quantity");
-            quantity = Integer.parseUnsignedInt(quantityString);
+            quantity = dataLoader.loadQuantity(request);
         } catch (NumberFormatException e){
-            request.setAttribute("quantityError", "Not a number!");
+            request.setAttribute(QUANTITY_ERROR_ATTRIBUTE, "Not a number!");
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
         }
         if(quantity != null){
             try {
-                cartService.addToCart(product, quantity);
+                cartService.addToCart(cart, product, quantity);
                 response.sendRedirect(request.getRequestURI()+"?message=success");
             } catch (NotEnoughStockException e){
-                request.setAttribute("quantityError", "Not enough stock!");
+                request.setAttribute(QUANTITY_ERROR_ATTRIBUTE, "Not enough stock!");
                 request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
             }
         }
 
-    }
-
-    private Product loadProduct(HttpServletRequest request) throws NumberFormatException, NoSuchProductException {
-        String uri = request.getRequestURI();
-        int lastSlashIndex = uri.lastIndexOf("/");
-        String productId = uri.substring(lastSlashIndex + 1);
-        long id = Long.parseLong(productId);
-        return productDao.getProduct(id);
     }
 }
