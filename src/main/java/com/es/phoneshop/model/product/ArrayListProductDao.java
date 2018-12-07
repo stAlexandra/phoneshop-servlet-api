@@ -3,6 +3,8 @@ package com.es.phoneshop.model.product;
 import com.es.phoneshop.model.product.exception.NoSuchProductException;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -36,41 +38,42 @@ public class ArrayListProductDao implements ProductDao {
 
 
     @Override
-    public List<Product> findProducts(String query, String sortField, String sortOrder) {
+    public List<Product> findProducts(String query, String sortField, boolean sortOrder) {
         synchronized (products){
-            List<Product> result = products.stream()
-                    .filter(product -> product.getPrice() != null && product.getStock() > 0)
+            Predicate<Product> isValid = product -> product.getPrice() != null && product.getStock() > 0;
+
+            List<Product> productsList = products.stream()
+                    .filter(isValid)
                     .collect(Collectors.toList());
 
             if(query != null) {
-                String[] queryWords = query.split(" ");
-                result = result.stream()
-                        .filter(product -> Arrays.stream(queryWords).anyMatch(word -> product.getDescription().contains(word)))
-                        .sorted((product1, product2) -> {
-                            Long numMatches1 = Arrays.stream(queryWords).filter(word -> product1.getDescription().contains(word)).count();
-                            Long numMatches2 = Arrays.stream(queryWords).filter(word -> product2.getDescription().contains(word)).count();
+                String[] queryWords = query.split("\\s+");
 
-                            return numMatches2.compareTo(numMatches1);
-                        })
+                productsList = productsList.stream().collect(Collectors.toMap(Function.identity(),product ->
+                    Arrays.stream(queryWords).filter(word -> product.getDescription().contains(word)).count()
+                 )).entrySet().stream()
+                        .filter(entry -> entry.getValue() > 0)
+                        .sorted(Comparator.comparing(Map.Entry<Product, Long>::getValue).reversed())
+                        .map(Map.Entry::getKey)
                         .collect(Collectors.toList());
             }
 
-            if(sortField != null && sortOrder != null){
-                sort(result, sortField, sortOrder);
+            if(sortField != null){
+                sort(productsList, sortField, sortOrder);
             }
 
-            return result;
+            return productsList;
         }
     }
 
-    private void sort(List<Product> products, String field, String order){
-        if(field != null && order != null){
+    private void sort(List<Product> products, String field, boolean order){
+        if(field != null){
             if(field.equals("description")){
                 products.sort(Comparator.comparing(Product::getDescription));
             } else if(field.equals("price")) {
                 products.sort(Comparator.comparing(Product::getPrice));
             }
-            if(order.equals("desc")) Collections.reverse(products);
+            if(!order) Collections.reverse(products);
         }
     }
 
@@ -97,7 +100,7 @@ public class ArrayListProductDao implements ProductDao {
     public void delete(Long id) {
         synchronized (products) {
             if(!products.removeIf(product -> product.getId().equals(id))){
-                throw new IllegalArgumentException("No product with id "+ id);
+                throw new NoSuchProductException("No product with id "+ id);
             }
         }
     }
