@@ -7,8 +7,8 @@ import com.es.phoneshop.model.product.exception.NoSuchProductException;
 import javax.servlet.http.HttpServletRequest;
 
 public class DataLoader {
-    public Integer loadQuantity(HttpServletRequest request) throws NumberFormatException{
-        String quantityString = request.getParameter("quantity");
+    public Integer loadQuantity(HttpServletRequest request, String quantityParameter) throws NumberFormatException{
+        String quantityString = request.getParameter(quantityParameter);
         return Integer.parseUnsignedInt(quantityString);
     }
 

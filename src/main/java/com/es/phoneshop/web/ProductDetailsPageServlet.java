@@ -52,7 +52,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
         Integer quantity = null;
         try {
-            quantity = dataLoader.loadQuantity(request);
+            quantity = dataLoader.loadQuantity(request, "quantity");
         } catch (NumberFormatException e){
             request.setAttribute(QUANTITY_ERROR_ATTRIBUTE, "Not a number!");
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
