@@ -1,9 +1,9 @@
 package com.es.phoneshop.service;
 
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.cart.Cart;
-import com.es.phoneshop.model.product.cart.CartItem;
-import com.es.phoneshop.model.product.exception.NotEnoughStockException;
+import com.es.phoneshop.model.cart.Cart;
+import com.es.phoneshop.model.cart.CartItem;
+import com.es.phoneshop.model.exception.NotEnoughStockException;
 
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
@@ -38,13 +38,13 @@ public class CartServiceImpl implements CartService {
     @Override
     public void addToCart(Cart cart, Product product, Integer quantity) throws NotEnoughStockException{
         int currentStock = product.getStock();
-        if(currentStock < quantity) throw new NotEnoughStockException();
+        if(currentStock < quantity) throw new NotEnoughStockException(quantity);
 
         Optional<CartItem> optCartItem = cart.getCartItems().stream().filter(cartItem -> product.getId().equals(cartItem.getProduct().getId())).findAny();
         if(optCartItem.isPresent()){
             CartItem cartItem = optCartItem.get();
             if(currentStock < cartItem.getQuantity() + quantity){
-                throw new NotEnoughStockException();
+                throw new NotEnoughStockException(quantity);
             }
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
         } else {

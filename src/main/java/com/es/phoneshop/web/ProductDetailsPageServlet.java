@@ -1,13 +1,11 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductDao;
-import com.es.phoneshop.model.product.cart.Cart;
+import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.service.CartService;
 import com.es.phoneshop.service.CartServiceImpl;
-import com.es.phoneshop.model.product.exception.NoSuchProductException;
-import com.es.phoneshop.model.product.exception.NotEnoughStockException;
+import com.es.phoneshop.model.exception.NoSuchProductException;
+import com.es.phoneshop.model.exception.NotEnoughStockException;
 import com.es.phoneshop.service.DataLoader;
 
 import javax.servlet.ServletException;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ProductDetailsPageServlet extends HttpServlet {
-    private ProductDao productDao;
     private CartService cartService;
     private DataLoader dataLoader;
 
@@ -26,7 +23,6 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        productDao = ArrayListProductDao.getInstance();
         cartService = CartServiceImpl.getInstance();
         dataLoader = new DataLoader();
     }
@@ -34,8 +30,9 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Product product = dataLoader.loadProduct(request, productDao);
+            Product product = dataLoader.loadProductFromURI(request);
             request.setAttribute("product", product);
+            request.setAttribute("viewedProducts", dataLoader.loadRecentlyViewedProductList(request));
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
         } catch (NoSuchProductException | NumberFormatException e){
             response.sendError(404);
@@ -44,7 +41,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Product product = dataLoader.loadProduct(request, productDao);
+        Product product = dataLoader.loadProductFromURI(request);
         Cart cart = cartService.getCart(request.getSession());
 
         request.setAttribute("product", product);

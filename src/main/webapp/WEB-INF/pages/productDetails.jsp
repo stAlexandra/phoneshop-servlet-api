@@ -23,10 +23,11 @@
 <main>
     <br>cart:${cart}<br>
     <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
+    <br>
     <table width="320">
         <tr>
             <td>Description</td>
-            <td>${product.description}</td>
+            <td style="text-align: right">${product.description}</td>
         </tr>
         <tr>
             <td>Price</td>
@@ -46,6 +47,7 @@
         </c:if>
     </form>
 </main>
+<jsp:include page="/WEB-INF/pages/recentlyViewedProducts.jsp"/>
 <div>
     <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </div>

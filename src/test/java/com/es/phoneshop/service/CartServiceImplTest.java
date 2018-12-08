@@ -1,9 +1,9 @@
 package com.es.phoneshop.service;
 
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.cart.Cart;
-import com.es.phoneshop.model.product.cart.CartItem;
-import com.es.phoneshop.model.product.exception.NotEnoughStockException;
+import com.es.phoneshop.model.cart.Cart;
+import com.es.phoneshop.model.cart.CartItem;
+import com.es.phoneshop.model.exception.NotEnoughStockException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -14,6 +14,16 @@
         <listener-class>com.es.phoneshop.web.ProductDemodataServletContextListener</listener-class>
     </listener>
 
+    <filter>
+        <filter-name>RecentlyViewedProductsFilter</filter-name>
+        <filter-class>com.es.phoneshop.web.RecentlyViewedProductsFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>RecentlyViewedProductsFilter</filter-name>
+        <servlet-name>productDetails</servlet-name>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>productList</servlet-name>
         <servlet-class>com.es.phoneshop.web.ProductListPageServlet</servlet-class>

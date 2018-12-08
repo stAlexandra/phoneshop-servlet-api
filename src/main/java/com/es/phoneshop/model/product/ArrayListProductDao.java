@@ -1,10 +1,10 @@
 package com.es.phoneshop.model.product;
 
-import com.es.phoneshop.model.product.exception.NoSuchProductException;
+import com.es.phoneshop.model.exception.NoSuchProductException;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -32,7 +32,7 @@ public class ArrayListProductDao implements ProductDao {
             return products.stream()
                     .filter(product -> product.getId().equals(id))
                     .findFirst()
-                    .orElseThrow(()->new NoSuchProductException("No product with id "+ id));
+                    .orElseThrow(()->new NoSuchProductException(id));
         }
     }
 
@@ -49,9 +49,9 @@ public class ArrayListProductDao implements ProductDao {
             if(query != null) {
                 String[] queryWords = query.split("\\s+");
 
-                productsList = productsList.stream().collect(Collectors.toMap(Function.identity(),product ->
+                productsList = productsList.stream().collect(Collectors.toMap(UnaryOperator.identity(), product ->
                     Arrays.stream(queryWords).filter(word -> product.getDescription().contains(word)).count()
-                 )).entrySet().stream()
+                )).entrySet().stream()
                         .filter(entry -> entry.getValue() > 0)
                         .sorted(Comparator.comparing(Map.Entry<Product, Long>::getValue).reversed())
                         .map(Map.Entry::getKey)
@@ -100,7 +100,7 @@ public class ArrayListProductDao implements ProductDao {
     public void delete(Long id) {
         synchronized (products) {
             if(!products.removeIf(product -> product.getId().equals(id))){
-                throw new NoSuchProductException("No product with id "+ id);
+                throw new NoSuchProductException(id);
             }
         }
     }

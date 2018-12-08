@@ -1,6 +1,6 @@
 package com.es.phoneshop.model.product;
 
-import com.es.phoneshop.model.product.exception.NoSuchProductException;
+import com.es.phoneshop.model.exception.NoSuchProductException;
 import org.junit.*;
 
 import java.math.BigDecimal;
