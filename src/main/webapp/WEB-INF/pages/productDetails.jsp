@@ -21,11 +21,13 @@
     <jsp:include page="/WEB-INF/pages/header.jsp"/>
 </div>
 <main>
+    <br>cart:${cart}<br>
     <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
-    <table>
+    <br>
+    <table width="320">
         <tr>
             <td>Description</td>
-            <td>${product.description}</td>
+            <td style="text-align: right">${product.description}</td>
         </tr>
         <tr>
             <td>Price</td>
@@ -34,7 +36,18 @@
             </td>
         </tr>
     </table>
+    <form method="post" action="<c:url value="/products/${product.id}"/>">
+        <br>Quantity: <input class="number" name="quantity" value="${not empty param.quantity ? param.quantity : 1}"/>
+        <button>Add to cart</button>
+        <c:if test="${not empty param.message}">
+            <p class="success">Added to cart successfully!</p>
+        </c:if>
+        <c:if test="${not empty quantityError}">
+            <p class="error">${quantityError}</p>
+        </c:if>
+    </form>
 </main>
+<jsp:include page="/WEB-INF/pages/recentlyViewedProducts.jsp"/>
 <div>
     <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </div>

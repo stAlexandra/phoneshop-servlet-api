@@ -22,7 +22,9 @@ public class ProductListPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = request.getParameter("query");
         String sortField = request.getParameter("sort");
-        String sortOrder = request.getParameter("order");
+        String sortOrderString = request.getParameter("order");
+
+        boolean sortOrder = "asc".equals(sortOrderString);
 
         request.setAttribute("products", productDao.findProducts(query, sortField, sortOrder));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);

@@ -66,9 +66,15 @@
         <c:forEach var="product" items="${products}">
           <tr>
             <td>
-              <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
+                <a href="<c:url value="/products/${product.id}"/>" methods="POST">
+                    <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
+                </a>
             </td>
-            <td>${product.description}</td>
+            <td>
+                <a href="<c:url value="/products/${product.id}"/>" methods="POST">
+                        ${product.description}
+                </a>
+            </td>
             <td class="price">
               <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
             </td>
