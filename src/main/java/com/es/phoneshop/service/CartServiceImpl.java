@@ -1,5 +1,6 @@
 package com.es.phoneshop.service;
 
+import com.es.phoneshop.model.exception.NoSuchProductException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
@@ -50,5 +51,20 @@ public class CartServiceImpl implements CartService {
         } else {
             cart.getCartItems().add(new CartItem(product, quantity));
         }
+    }
+
+    @Override
+    public void updateCart(Cart cart, Product product, Integer quantity) throws NotEnoughStockException{
+        int currentStock = product.getStock();
+        if(currentStock < quantity) throw new NotEnoughStockException(quantity);
+
+        Optional<CartItem> optCartItem = cart.getCartItems().stream().filter(cartItem -> product.getId().equals(cartItem.getProduct().getId())).findAny();
+
+        optCartItem.ifPresent(cartItem -> cartItem.setQuantity(quantity));
+    }
+
+    @Override
+    public boolean deleteItem(Cart cart, Product product) {
+        return cart.getCartItems().removeIf(item -> item.getProduct().getId().equals(product.getId()));
     }
 }

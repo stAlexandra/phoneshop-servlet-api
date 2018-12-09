@@ -2,11 +2,9 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.service.CartService;
-import com.es.phoneshop.service.CartServiceImpl;
+import com.es.phoneshop.service.*;
 import com.es.phoneshop.model.exception.NoSuchProductException;
 import com.es.phoneshop.model.exception.NotEnoughStockException;
-import com.es.phoneshop.service.DataLoader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +15,7 @@ import java.io.IOException;
 public class ProductDetailsPageServlet extends HttpServlet {
     private CartService cartService;
     private DataLoader dataLoader;
+    private RecentlyViewedService recentlyViewedService;
 
     private static final String QUANTITY_ERROR_ATTRIBUTE = "quantityError";
 
@@ -25,6 +24,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         super.init();
         cartService = CartServiceImpl.getInstance();
         dataLoader = new DataLoader();
+        recentlyViewedService = RecentlyViewedServiceImpl.getInstance();
     }
 
     @Override
@@ -33,6 +33,9 @@ public class ProductDetailsPageServlet extends HttpServlet {
             Product product = dataLoader.loadProductFromURI(request);
             request.setAttribute("product", product);
             request.setAttribute("viewedProducts", dataLoader.loadRecentlyViewedProductList(request));
+
+            recentlyViewedService.addToList(product, recentlyViewedService.getList(request.getSession()));
+
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
         } catch (NoSuchProductException | NumberFormatException e){
             response.sendError(404);

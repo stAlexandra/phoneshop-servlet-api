@@ -24,10 +24,9 @@ public class DataLoader {
 
     public Product loadProductFromURI(HttpServletRequest request) throws NumberFormatException, NoSuchProductException {
         String uri = request.getRequestURI();
-        int lastSlashIndex = uri.lastIndexOf("/");
-        String productId = uri.substring(lastSlashIndex + 1);
-        long id = Long.parseLong(productId);
-
+        int idIndex = uri.lastIndexOf("/");
+        String stringId = uri.substring(idIndex + 1);
+        Long id = Long.parseLong(stringId);
         return productDao.getProduct(id);
     }
 
