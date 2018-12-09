@@ -13,7 +13,9 @@
 <jsp:useBean id="product" type="com.es.phoneshop.model.product.Product" scope="request"/>
 <tags:master pageTitle="${product.description}" pageClass="product-details">
 
-<br>cart:${cart}<br>
+    <form method="get" action="<c:url value="/cart"/>">
+        <button>Go to cart</button>
+    </form>
 <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
 <br>
 <table>

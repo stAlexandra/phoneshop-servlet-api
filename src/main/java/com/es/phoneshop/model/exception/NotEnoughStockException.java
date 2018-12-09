@@ -17,7 +17,7 @@ public class NotEnoughStockException extends RuntimeException {
         super(message, cause);
     }
 
-    public NotEnoughStockException(Integer desiredQuantity) {
-        super("Quantity " + desiredQuantity + " exceeds stock for the product.");
+    public NotEnoughStockException(Integer wantedQuantity) {
+        super("Quantity " + wantedQuantity + " exceeds stock for the product.");
     }
 }

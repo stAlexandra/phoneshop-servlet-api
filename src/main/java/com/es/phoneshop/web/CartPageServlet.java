@@ -2,9 +2,7 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.exception.NotEnoughStockException;
-import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.service.CartService;
 import com.es.phoneshop.service.CartServiceImpl;
 import com.es.phoneshop.service.DataLoader;
@@ -18,14 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CartPageServlet extends HttpServlet {
-    CartService cartService;
-    ProductDao productDao;
+    private CartService cartService;
+    private DataLoader dataLoader;
 
     @Override
     public void init() throws ServletException {
         super.init();
         cartService = CartServiceImpl.getInstance();
-        productDao = ArrayListProductDao.getInstance();
+        dataLoader = new DataLoader();
     }
 
     @Override
@@ -42,30 +40,32 @@ public class CartPageServlet extends HttpServlet {
         Map<Long, String> quantityErrors = new HashMap<>();
 
         Cart cart = cartService.getCart(request.getSession());
+
         for(int i = 0; i < productIds.length; i++){
-            Long productId = Long.valueOf(productIds[i]);
-            Product product = productDao.getProduct(productId);
+            Product product = dataLoader.loadProduct(productIds[i]);
             Integer quantity = null;
+
             try{
-                quantity = Integer.parseUnsignedInt(quantities[i]);
+                quantity = dataLoader.loadQuantity(quantities[i]);
             } catch (NumberFormatException e){
-                quantityErrors.put(productId, "Not a number!");
+                quantityErrors.put(product.getId(), "Not a number!");
             }
+
             if(quantity != null){
                 try{
                     cartService.updateCart(cart, product, quantity);
                 } catch (NotEnoughStockException e){
-                    quantityErrors.put(productId, "Not enough stock!");
+                    quantityErrors.put(product.getId(), "Not enough stock!");
                 }
             }
         }
 
         request.setAttribute("quantityErrors", quantityErrors);
+        request.setAttribute("cart", cart);
 
         if (quantityErrors.isEmpty()) {
             response.sendRedirect(request.getRequestURI() + "?message=Updated successfully");
         } else {
-            request.setAttribute("cart", cart);
             request.getRequestDispatcher("/WEB-INF/pages/cart.jsp").forward(request, response);
         }
     }
