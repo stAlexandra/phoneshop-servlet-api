@@ -21,12 +21,19 @@ public class DataLoader {
         String quantityString = request.getParameter(quantityParameter);
         return Integer.parseUnsignedInt(quantityString);
     }
+    public Integer loadQuantity(String quantityString) throws NumberFormatException{
+        return Integer.parseUnsignedInt(quantityString);
+    }
 
     public Product loadProductFromURI(HttpServletRequest request) throws NumberFormatException, NoSuchProductException {
         String uri = request.getRequestURI();
         int idIndex = uri.lastIndexOf("/");
         String stringId = uri.substring(idIndex + 1);
         Long id = Long.parseLong(stringId);
+        return productDao.getProduct(id);
+    }
+    public Product loadProduct(String productId) throws NumberFormatException, NoSuchProductException{
+        Long id = Long.parseLong(productId);
         return productDao.getProduct(id);
     }
 

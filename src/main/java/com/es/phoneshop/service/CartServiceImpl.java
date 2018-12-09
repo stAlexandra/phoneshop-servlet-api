@@ -1,6 +1,5 @@
 package com.es.phoneshop.service;
 
-import com.es.phoneshop.model.exception.NoSuchProductException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;

@@ -5,8 +5,8 @@ import com.es.phoneshop.model.exception.NoSuchProductException;
 import com.es.phoneshop.model.exception.NotEnoughStockException;
 import com.es.phoneshop.service.CartService;
 import com.es.phoneshop.service.DataLoader;
+import com.es.phoneshop.service.RecentlyViewedService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,6 +40,8 @@ public class ProductDetailsPageServletTest {
     private CartService cartService;
     @Mock
     private DataLoader dataLoader;
+    @Mock
+    private RecentlyViewedService recentlyViewedService;
 
     private static final String QUANTITY_ERROR_ATTRIBUTE = "quantityError";
     private static final String QUANTITY_PARAMETER = "quantity";
@@ -49,7 +51,6 @@ public class ProductDetailsPageServletTest {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
     }
 
-    @Ignore
     @Test
     public void testDoGetValidProduct() throws ServletException, IOException {
         when(dataLoader.loadProductFromURI(request)).thenReturn(product);
