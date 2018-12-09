@@ -6,6 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<footer style="margin-top: 50px; color: grey">
+<footer>
     ExpertSoft Trainings
 </footer>
