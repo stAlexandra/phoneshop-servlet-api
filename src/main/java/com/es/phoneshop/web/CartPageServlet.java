@@ -3,9 +3,10 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.exception.NotEnoughStockException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.CartService;
-import com.es.phoneshop.service.CartServiceImpl;
-import com.es.phoneshop.service.DataLoader;
+import com.es.phoneshop.service.cartService.CartService;
+import com.es.phoneshop.service.cartService.CartServiceImpl;
+import com.es.phoneshop.service.productService.ProductService;
+import com.es.phoneshop.service.productService.ProductServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,13 +18,13 @@ import java.util.Map;
 
 public class CartPageServlet extends HttpServlet {
     private CartService cartService;
-    private DataLoader dataLoader;
+    private ProductService productService;
 
     @Override
     public void init() throws ServletException {
         super.init();
         cartService = CartServiceImpl.getInstance();
-        dataLoader = new DataLoader();
+        productService = ProductServiceImpl.getInstance();
     }
 
     @Override
@@ -42,11 +43,11 @@ public class CartPageServlet extends HttpServlet {
         Cart cart = cartService.getCart(request.getSession());
 
         for(int i = 0; i < productIds.length; i++){
-            Product product = dataLoader.loadProduct(productIds[i]);
+            Product product = productService.getProduct(productIds[i]);
             Integer quantity = null;
 
             try{
-                quantity = dataLoader.loadQuantity(quantities[i]);
+                quantity = Integer.parseUnsignedInt(quantities[i]);
             } catch (NumberFormatException e){
                 quantityErrors.put(product.getId(), "Not a number!");
             }

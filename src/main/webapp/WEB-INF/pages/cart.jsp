@@ -20,19 +20,20 @@
         </c:if>
         <table>
             <thead>
-                <tr>
-                    <td></td>
-                    <td>Description</td>
-                    <td class="price">Price</td>
-                    <td class="number">Quantity</td>
-                    <td></td>
-                </tr>
+            <tr>
+                <td></td>
+                <td>Description</td>
+                <td class="price">Price</td>
+                <td class="number">Quantity</td>
+                <td></td>
+            </tr>
             </thead>
             <c:forEach var="item" items="${cart.cartItems}" varStatus="status">
                 <tr>
                     <td>
                         <a href="<c:url value="/products/${item.product.id}"/>">
-                            <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${item.product.imageUrl}">
+                            <img class="product-tile"
+                                 src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${item.product.imageUrl}">
                         </a>
                     </td>
                     <td>
@@ -41,7 +42,8 @@
                         </a>
                     </td>
                     <td class="price">
-                        <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="${item.product.currency.symbol}"/>
+                        <fmt:formatNumber value="${item.product.price}" type="currency"
+                                          currencySymbol="${item.product.currency.symbol}"/>
                     </td>
                     <td>
                         <input name="quantity"
@@ -54,7 +56,9 @@
                         </c:if>
                     </td>
                     <td>
-                        <button formaction="${pageContext.servletContext.contextPath}/cart/delete/${item.product.id}" formmethod="post">Delete</button>
+                        <button formaction="${pageContext.servletContext.contextPath}/cart/delete/${item.product.id}"
+                                formmethod="post">Delete
+                        </button>
                     </td>
                 </tr>
             </c:forEach>

@@ -3,9 +3,9 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.exception.NoSuchProductException;
 import com.es.phoneshop.model.exception.NotEnoughStockException;
-import com.es.phoneshop.service.CartService;
-import com.es.phoneshop.service.DataLoader;
-import com.es.phoneshop.service.RecentlyViewedService;
+import com.es.phoneshop.service.cartService.CartService;
+import com.es.phoneshop.service.productService.ProductServiceImpl;
+import com.es.phoneshop.service.recentlyViewedService.RecentlyViewedService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class ProductDetailsPageServletTest {
     @Mock
     private CartService cartService;
     @Mock
-    private DataLoader dataLoader;
+    private ProductServiceImpl productService;
     @Mock
     private RecentlyViewedService recentlyViewedService;
 
@@ -53,7 +53,7 @@ public class ProductDetailsPageServletTest {
 
     @Test
     public void testDoGetValidProduct() throws ServletException, IOException {
-        when(dataLoader.loadProductFromURI(request)).thenReturn(product);
+        when(productService.getProduct(request)).thenReturn(product);
 
         servlet.doGet(request, response);
 
@@ -63,7 +63,7 @@ public class ProductDetailsPageServletTest {
 
     @Test
     public void testDoGetProductNotExist() throws ServletException, IOException {
-        when(dataLoader.loadProductFromURI(request)).thenThrow(NoSuchProductException.class);
+        when(productService.getProduct(request)).thenThrow(NoSuchProductException.class);
 
         servlet.doGet(request, response);
 
@@ -72,7 +72,7 @@ public class ProductDetailsPageServletTest {
 
     @Test
     public void testDoGetInvalidProductId() throws ServletException, IOException {
-        when(dataLoader.loadProductFromURI(request)).thenThrow(NumberFormatException.class);
+        when(productService.getProduct(request)).thenThrow(NumberFormatException.class);
 
         servlet.doGet(request, response);
 
@@ -82,8 +82,8 @@ public class ProductDetailsPageServletTest {
     @Test
     public void testDoPostSendRedirectWhenOK() throws ServletException, IOException{
         int quantity = 1;
-        when(dataLoader.loadProductFromURI(request)).thenReturn(product);
-        when(dataLoader.loadQuantity(request, QUANTITY_PARAMETER)).thenReturn(quantity);
+        when(productService.getProduct(request)).thenReturn(product);
+        when(cartService.getItemQuantity(request, QUANTITY_PARAMETER)).thenReturn(quantity);
 
         servlet.doPost(request, response);
 
@@ -93,7 +93,7 @@ public class ProductDetailsPageServletTest {
 
     @Test
     public void testDoPostQuantityError() throws ServletException, IOException{
-        when(dataLoader.loadQuantity(request, QUANTITY_PARAMETER)).thenThrow(NumberFormatException.class);
+        when(cartService.getItemQuantity(request, QUANTITY_PARAMETER)).thenThrow(NumberFormatException.class);
 
         servlet.doPost(request, response);
 

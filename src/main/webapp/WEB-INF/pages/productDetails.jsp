@@ -16,30 +16,30 @@
     <form method="get" action="<c:url value="/cart"/>">
         <button>Go to cart</button>
     </form>
-<img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
-<br>
-<table>
-    <tr>
-        <td>Description</td>
-        <td style="text-align: right">${product.description}</td>
-    </tr>
-    <tr>
-        <td>Price</td>
-        <td class="price">
-            <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
-        </td>
-    </tr>
-</table>
-<form method="post" action="<c:url value="/products/${product.id}"/>">
-    <br>Quantity: <input class="number" name="quantity" value="${not empty param.quantity ? param.quantity : 1}"/>
-    <button>Add to cart</button>
-    <c:if test="${not empty param.message}">
-        <p class="success">Added to cart successfully!</p>
-    </c:if>
-    <c:if test="${not empty quantityError}">
-        <p class="error">${quantityError}</p>
-    </c:if>
-</form>
+    <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
+    <br>
+    <table>
+        <tr>
+            <td>Description</td>
+            <td style="text-align: right">${product.description}</td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td class="price">
+                <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
+            </td>
+        </tr>
+    </table>
+    <form method="post" action="<c:url value="/products/${product.id}"/>">
+        <br>Quantity: <input class="number" name="quantity" value="${not empty param.quantity ? param.quantity : 1}"/>
+        <button>Add to cart</button>
+        <c:if test="${not empty param.message}">
+            <p class="success">Added to cart successfully!</p>
+        </c:if>
+        <c:if test="${not empty quantityError}">
+            <p class="error">${quantityError}</p>
+        </c:if>
+    </form>
 
-<jsp:include page="/WEB-INF/pages/recentlyViewedProducts.jsp"/>
+    <jsp:include page="/WEB-INF/pages/recentlyViewedProducts.jsp"/>
 </tags:master>

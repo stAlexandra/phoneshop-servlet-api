@@ -3,8 +3,8 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.exception.NotEnoughStockException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.CartService;
-import com.es.phoneshop.service.DataLoader;
+import com.es.phoneshop.service.cartService.CartService;
+import com.es.phoneshop.service.productService.ProductServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,14 +38,14 @@ public class CartPageServletTest {
     @Mock
     private Cart cart;
     @Mock
-    private DataLoader dataLoader;
+    private ProductServiceImpl productService;
     @Mock
     private Product product;
 
     @Before
     public void setUp() {
-        when(dataLoader.loadProduct(anyString())).thenReturn(product);
-        when(dataLoader.loadQuantity(anyString())).thenReturn(1);
+        when(productService.getProduct(anyString())).thenReturn(product);
+       // when(cartService.getItemQuantity(anyString())).thenReturn(1);
         when(cartService.getCart(any())).thenReturn(cart);
 
         String[] nums = new String[]{"1", "2", "3"};
@@ -65,7 +65,7 @@ public class CartPageServletTest {
 
     @Test
     public void testDoPostQuantityError() throws ServletException, IOException{
-        when(dataLoader.loadQuantity(anyString())).thenThrow(NumberFormatException.class);
+        when(request.getParameterValues("quantity")).thenReturn(new String[]{"a", "b", "c"});
 
         servlet.doPost(request, response);
 
