@@ -11,27 +11,37 @@
     </context-param>
 
     <listener>
-        <listener-class>com.es.phoneshop.web.ProductDemodataServletContextListener</listener-class>
+        <listener-class>com.es.phoneshop.web.listeners.ProductDemodataServletContextListener</listener-class>
     </listener>
 
-    <filter>
-        <filter-name>RecentlyViewedProductsFilter</filter-name>
-        <filter-class>com.es.phoneshop.web.RecentlyViewedProductsFilter</filter-class>
-    </filter>
+    <servlet>
+        <servlet-name>checkout</servlet-name>
+        <servlet-class>com.es.phoneshop.web.CheckoutPageServlet</servlet-class>
+    </servlet>
 
-    <filter-mapping>
-        <filter-name>RecentlyViewedProductsFilter</filter-name>
-        <servlet-name>productDetails</servlet-name>
-    </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>checkout</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>productList</servlet-name>
         <servlet-class>com.es.phoneshop.web.ProductListPageServlet</servlet-class>
     </servlet>
-  
+
     <servlet-mapping>
         <servlet-name>productList</servlet-name>
         <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>cart</servlet-name>
+        <servlet-class>com.es.phoneshop.web.CartPageServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>cart</servlet-name>
+        <url-pattern>/cart</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -42,6 +52,16 @@
     <servlet-mapping>
         <servlet-name>productDetails</servlet-name>
         <url-pattern>/products/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>cartItemDelete</servlet-name>
+        <servlet-class>com.es.phoneshop.web.CartItemDeleteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>cartItemDelete</servlet-name>
+        <url-pattern>/cart/delete/*</url-pattern>
     </servlet-mapping>
 
     <error-page>

@@ -1,20 +1,19 @@
-package com.es.phoneshop.service;
+package com.es.phoneshop.service.recentlyViewedService;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.LimitedSizeList;
 
-
 import javax.servlet.http.HttpSession;
 
-
-public class RecentlyViewedServiceImpl implements RecentlyViewedService{
+public class RecentlyViewedServiceImpl implements RecentlyViewedService {
     private final static String RECENTLY_VIEWED_ATTRIBUTE = "viewedProducts";
     private final static Integer MAX_NUM_VIEWED = 3;
 
     private static volatile RecentlyViewedService recentlyViewedService;
     private final static Object lock = new Object();
 
-    private RecentlyViewedServiceImpl() {}
+    private RecentlyViewedServiceImpl() {
+    }
 
     public static RecentlyViewedService getInstance() {
         if (recentlyViewedService == null) {

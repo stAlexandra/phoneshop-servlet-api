@@ -7,12 +7,15 @@
     <table>
         <tr>
             <c:forEach var="viewedProduct" items="${viewedProducts}">
-                <td>
-                    <p><img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${viewedProduct.imageUrl}"></p>
+                <td style="text-align: center">
+                    <p><img class="product-tile"
+                            src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${viewedProduct.imageUrl}">
+                    </p>
                     <a href="<c:url value="/products/${viewedProduct.id}"/>">
                             ${viewedProduct.description}
                     </a>
-                    <p><fmt:formatNumber value="${viewedProduct.price}" type="currency" currencySymbol="${viewedProduct.currency.symbol}"/></p>
+                    <p><fmt:formatNumber value="${viewedProduct.price}" type="currency"
+                                         currencySymbol="${viewedProduct.currency.symbol}"/></p>
                 </td>
             </c:forEach>
         </tr>

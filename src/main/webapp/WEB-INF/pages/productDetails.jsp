@@ -1,30 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: User
-  Date: 21.11.2018
-  Time: 1:29
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="product" type="com.es.phoneshop.model.product.Product" scope="request"/>
-<html>
-<head>
-    <title>${product.description}</title>
-    <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="<c:url value="/styles/main.css"/>">
-</head>
-<body class="product-list">
-<div>
-    <jsp:include page="/WEB-INF/pages/header.jsp"/>
-</div>
-<main>
-    <br>cart:${cart}<br>
+<tags:master pageTitle="${product.description}" pageClass="product-details" showMiniCart="true">
+
+    <form method="get" action="<c:url value="/cart"/>">
+        <button>Go to cart</button>
+    </form>
     <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
     <br>
-    <table width="320">
+    <table>
         <tr>
             <td>Description</td>
             <td style="text-align: right">${product.description}</td>
@@ -46,10 +33,6 @@
             <p class="error">${quantityError}</p>
         </c:if>
     </form>
-</main>
-<jsp:include page="/WEB-INF/pages/recentlyViewedProducts.jsp"/>
-<div>
-    <jsp:include page="/WEB-INF/pages/footer.jsp"/>
-</div>
-</body>
-</html>
+
+    <jsp:include page="/WEB-INF/pages/recentlyViewedProducts.jsp"/>
+</tags:master>
