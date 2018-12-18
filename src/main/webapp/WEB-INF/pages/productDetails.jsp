@@ -1,17 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: User
-  Date: 21.11.2018
-  Time: 1:29
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="product" type="com.es.phoneshop.model.product.Product" scope="request"/>
-<tags:master pageTitle="${product.description}" pageClass="product-details">
+<tags:master pageTitle="${product.description}" pageClass="product-details" showMiniCart="true">
 
     <form method="get" action="<c:url value="/cart"/>">
         <button>Go to cart</button>

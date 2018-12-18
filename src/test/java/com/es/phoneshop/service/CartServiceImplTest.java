@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CartServiceImplTest {
+    @Spy
     private CartServiceImpl cartService;
 
     private Cart cart = new Cart();
@@ -32,12 +34,12 @@ public class CartServiceImplTest {
 
     @Before
     public void setUp(){
-        cartService = CartServiceImpl.getInstance();
-
         when(cartItem.getProduct()).thenReturn(product);
 
         when(product.getStock()).thenReturn(1000);
         when(product.getId()).thenReturn(1L);
+
+        doNothing().when(cartService).recalculateCart(any());
     }
 
     @Test

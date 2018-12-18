@@ -3,6 +3,7 @@
 
 <%@attribute name="pageTitle" type="java.lang.String" required="true" %>
 <%@attribute name="pageClass" type="java.lang.String" required="false" %>
+<%@attribute name="showMiniCart" type="java.lang.Boolean" required = "false" %>
 
 <html>
 <head>
@@ -12,7 +13,9 @@
 </head>
 <body class="${pageClass}">
 <div>
-    <jsp:include page="/WEB-INF/pages/header.jsp"/>
+    <jsp:include page="/WEB-INF/pages/header.jsp">
+        <jsp:param name="showMiniCart" value="${showMiniCart}"/>
+    </jsp:include>
 </div>
 <main>
     <jsp:doBody/>

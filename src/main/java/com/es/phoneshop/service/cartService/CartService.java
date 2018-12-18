@@ -13,4 +13,5 @@ public interface CartService {
     void updateCart(Cart cart, Product product, Integer quantity) throws NotEnoughStockException;
     boolean deleteItem(Cart cart, Product product);
     Integer getItemQuantity(HttpServletRequest request, String quantityParameter) throws NumberFormatException;
+    void recalculateCart(Cart cart);
 }

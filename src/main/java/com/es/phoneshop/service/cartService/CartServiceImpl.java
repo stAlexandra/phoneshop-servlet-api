@@ -7,6 +7,7 @@ import com.es.phoneshop.model.exception.NotEnoughStockException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public class CartServiceImpl implements CartService {
@@ -39,6 +40,13 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
 
+
+    @Override
+    public Integer getItemQuantity(HttpServletRequest request, String quantityRequestParameter) throws NumberFormatException {
+        String quantityString = request.getParameter(quantityRequestParameter);
+        return Integer.parseUnsignedInt(quantityString);
+    }
+
     @Override
     public void addToCart(Cart cart, Product product, Integer quantity) throws NotEnoughStockException {
         int currentStock = product.getStock();
@@ -54,6 +62,8 @@ public class CartServiceImpl implements CartService {
         } else {
             cart.getCartItems().add(new CartItem(product, quantity));
         }
+
+        recalculateCart(cart);
     }
 
     @Override
@@ -62,18 +72,23 @@ public class CartServiceImpl implements CartService {
         if (currentStock < quantity) throw new NotEnoughStockException(quantity);
 
         Optional<CartItem> optCartItem = cart.getCartItems().stream().filter(cartItem -> product.getId().equals(cartItem.getProduct().getId())).findAny();
-
         optCartItem.ifPresent(cartItem -> cartItem.setQuantity(quantity));
+
+        recalculateCart(cart);
     }
 
     @Override
     public boolean deleteItem(Cart cart, Product product) {
-        return cart.getCartItems().removeIf(item -> item.getProduct().getId().equals(product.getId()));
+        boolean deleted = cart.getCartItems().removeIf(item -> item.getProduct().getId().equals(product.getId()));
+        recalculateCart(cart);
+        return deleted;
     }
 
     @Override
-    public Integer getItemQuantity(HttpServletRequest request, String quantityRequestParameter) throws NumberFormatException {
-        String quantityString = request.getParameter(quantityRequestParameter);
-        return Integer.parseUnsignedInt(quantityString);
+    public void recalculateCart(Cart cart){
+        BigDecimal totalPrice = cart.getCartItems().stream()
+                .map(cartItem -> cartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+                .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+        cart.setTotalPrice(totalPrice);
     }
 }
