@@ -53,7 +53,7 @@
         <input name="phone" placeholder="Phone"/>
         <br><br>
         <c:if test="${not empty param.error}">
-            <p class="error">All fields should be filled!</p>
+            <p class="error">${param.error}</p>
         </c:if>
         <button>Place order</button>
     </form>

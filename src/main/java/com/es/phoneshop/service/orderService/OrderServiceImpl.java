@@ -1,6 +1,7 @@
 package com.es.phoneshop.service.orderService;
 
 import com.es.phoneshop.dao.ArrayListOrderDao;
+import com.es.phoneshop.dao.OrderDao;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.exception.NotEnoughOrderDetailsException;
 import com.es.phoneshop.model.order.Order;
@@ -40,15 +41,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDetails getOrderDetails(HttpServletRequest request){
+    public Order getOrder(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        int idIndex = uri.lastIndexOf("/");
+        String id = uri.substring(idIndex + 1);
+
+        OrderDao orderDao = ArrayListOrderDao.getInstance();
+        return orderDao.getOrder(id);
+    }
+
+    @Override
+    public OrderDetails getOrderDetails(HttpServletRequest request) {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String deliveryAddress = request.getParameter("deliveryAddress");
         String phone = request.getParameter("phone");
-        if(firstName.isEmpty() || lastName.isEmpty() || deliveryAddress.isEmpty() || phone.isEmpty()){
+        if (firstName.isEmpty() || lastName.isEmpty() || deliveryAddress.isEmpty() || phone.isEmpty()) {
             throw new NotEnoughOrderDetailsException();
         }
-        OrderDetails  details = new OrderDetails();
+        OrderDetails details = new OrderDetails();
         details.setFirstName(firstName);
         details.setLastName(lastName);
         details.setDeliveryAddress(deliveryAddress);

@@ -3,6 +3,8 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.dao.ArrayListOrderDao;
 import com.es.phoneshop.dao.OrderDao;
 import com.es.phoneshop.model.order.Order;
+import com.es.phoneshop.service.orderService.OrderService;
+import com.es.phoneshop.service.orderService.OrderServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,21 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class OrderOverviewPageServlet extends HttpServlet {
-    private OrderDao orderDao;
+    private OrderService orderService;
 
     @Override
-    public void init() {
-        orderDao = ArrayListOrderDao.getInstance();
+    public void init() throws ServletException{
+        super.init();
+        orderService = OrderServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String uri = request.getRequestURI();
-        int idIndex = uri.lastIndexOf("/");
-        String id = uri.substring(idIndex + 1);
-
-        Order order = orderDao.getOrder(id);
-
+        Order order = orderService.getOrder(request);
         request.setAttribute("order", order);
         request.getRequestDispatcher("/WEB-INF/pages/orderOverview.jsp").forward(request, response);
     }

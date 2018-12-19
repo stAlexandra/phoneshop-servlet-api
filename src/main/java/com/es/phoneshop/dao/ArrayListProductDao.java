@@ -32,7 +32,7 @@ public class ArrayListProductDao implements ProductDao {
         synchronized (products){
             return products.stream()
                     .filter(product -> product.getId().equals(id))
-                    .findFirst()
+                    .findAny()
                     .orElseThrow(()->new NoSuchProductException(id));
         }
     }
@@ -69,9 +69,9 @@ public class ArrayListProductDao implements ProductDao {
 
     private void sort(List<Product> products, String field, boolean order){
         if(field != null){
-            if(field.equals("description")){
+            if("description".equals(field)){
                 products.sort(Comparator.comparing(Product::getDescription));
-            } else if(field.equals("price")) {
+            } else if("price".equals(field)) {
                 products.sort(Comparator.comparing(Product::getPrice));
             }
             if(!order) Collections.reverse(products);

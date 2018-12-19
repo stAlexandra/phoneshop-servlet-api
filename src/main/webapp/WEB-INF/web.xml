@@ -31,7 +31,7 @@
 
     <servlet-mapping>
         <servlet-name>orderOverview</servlet-name>
-        <url-pattern>/orderOverview/*</url-pattern>
+        <url-pattern>/order/overview/*</url-pattern>
     </servlet-mapping>
 
     <servlet>

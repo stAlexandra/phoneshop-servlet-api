@@ -4,6 +4,7 @@ import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImpl;
+import com.es.phoneshop.service.productService.ProductService;
 import com.es.phoneshop.service.productService.ProductServiceImpl;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CartItemDeleteServlet extends HttpServlet {
-    private ProductServiceImpl productService;
+    private ProductService productService;
     private CartService cartService;
 
     @Override
