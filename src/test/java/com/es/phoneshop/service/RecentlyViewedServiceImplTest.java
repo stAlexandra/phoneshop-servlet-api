@@ -1,6 +1,6 @@
 package com.es.phoneshop.service;
 
-import com.es.phoneshop.model.LimitedSizeList;
+import com.es.phoneshop.model.cart.LimitedSizeList;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.recentlyViewedService.RecentlyViewedService;
 import com.es.phoneshop.service.recentlyViewedService.RecentlyViewedServiceImpl;

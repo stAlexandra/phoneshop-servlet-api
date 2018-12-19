@@ -1,6 +1,8 @@
-package com.es.phoneshop.model.exception;
+package com.es.phoneshop.exception;
 
-public class NoSuchProductException extends RuntimeException{
+import java.util.NoSuchElementException;
+
+public class NoSuchProductException extends NoSuchElementException {
     public NoSuchProductException(){
         super();
     }

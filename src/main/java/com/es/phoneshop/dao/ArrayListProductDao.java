@@ -1,6 +1,7 @@
-package com.es.phoneshop.model.product;
+package com.es.phoneshop.dao;
 
-import com.es.phoneshop.model.exception.NoSuchProductException;
+import com.es.phoneshop.exception.NoSuchProductException;
+import com.es.phoneshop.model.product.Product;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -93,7 +94,7 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     private boolean productExist(Long id){
-        return products.stream().anyMatch(product -> product.getId().equals(id));
+        return products.stream().anyMatch(product -> id.equals(product.getId()));
     }
 
     @Override

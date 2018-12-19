@@ -1,5 +1,6 @@
 package com.es.phoneshop.model;
 
+import com.es.phoneshop.model.cart.LimitedSizeList;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.es.phoneshop.model.exception;
+package com.es.phoneshop.exception;
 
 public class NotEnoughStockException extends RuntimeException {
     public NotEnoughStockException() {

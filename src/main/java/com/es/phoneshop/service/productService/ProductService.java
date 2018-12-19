@@ -1,6 +1,6 @@
 package com.es.phoneshop.service.productService;
 
-import com.es.phoneshop.model.exception.NoSuchProductException;
+import com.es.phoneshop.exception.NoSuchProductException;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,11 +1,10 @@
 package com.es.phoneshop.model.product;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Objects;
 
-public class Product implements Serializable {
+public class Product {
     private Long id;
     private String code;
     private String description;

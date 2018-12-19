@@ -2,8 +2,8 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.exception.NoSuchProductException;
-import com.es.phoneshop.model.exception.NotEnoughStockException;
+import com.es.phoneshop.exception.NoSuchProductException;
+import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImpl;
 import com.es.phoneshop.service.productService.ProductService;

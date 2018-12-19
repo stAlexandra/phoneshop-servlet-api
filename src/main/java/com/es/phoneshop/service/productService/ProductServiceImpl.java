@@ -1,9 +1,9 @@
 package com.es.phoneshop.service.productService;
 
-import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.dao.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.exception.NoSuchProductException;
-import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.exception.NoSuchProductException;
+import com.es.phoneshop.dao.ProductDao;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
