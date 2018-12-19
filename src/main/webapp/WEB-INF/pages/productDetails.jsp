@@ -31,5 +31,7 @@
         </c:if>
     </form>
 
-    <jsp:include page="/WEB-INF/pages/recentlyViewedProducts.jsp"/>
+    <tags:productsStatistic productList="${viewedProducts}" title="Recently viewed products"/>
+    <%--<tags:productsStatistic productList="${popularProducts}" title="Most popular products"/>--%>
+
 </tags:master>

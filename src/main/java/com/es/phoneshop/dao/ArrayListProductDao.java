@@ -31,12 +31,21 @@ public class ArrayListProductDao implements ProductDao {
     public Product getProduct(Long id) {
         synchronized (products){
             return products.stream()
-                    .filter(product -> product.getId().equals(id))
+                    .filter(product -> id.equals(product.getId()))
                     .findAny()
                     .orElseThrow(()->new NoSuchProductException(id));
         }
     }
 
+    @Override
+    public Product getProduct(String code) {
+        synchronized (products){
+            return products.stream()
+                    .filter(product -> code.equals(product.getCode()))
+                    .findAny()
+                    .orElseThrow(()->new NoSuchProductException());
+        }
+    }
 
     @Override
     public List<Product> findProducts(String query, String sortField, boolean sortOrder) {
