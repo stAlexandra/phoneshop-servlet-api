@@ -71,9 +71,6 @@
             <br>
             <button>Update</button>
         </form>
-        <%--<form method="get" action="<c:url value="/checkout"/>">--%>
-            <%--<button>Checkout</button>--%>
-        <%--</form>--%>
         <h3><a href="<c:url value="/checkout"/>">Checkout</a></h3>
     </c:if>
     <c:if test="${empty cart.cartItems}">
