@@ -1,5 +1,6 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.orderService.OrderService;
@@ -35,6 +36,8 @@ public class CheckoutPageServletTest {
     @Mock
     private CartService cartService;
     @Mock
+    private Cart cart;
+    @Mock
     private OrderService orderService;
     @Mock
     private Order order;
@@ -42,7 +45,9 @@ public class CheckoutPageServletTest {
     @Before
     public void setUp() {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        when(request.getParameter(anyString())).thenReturn("parameter");
         when(orderService.placeOrder(any(), any())).thenReturn(order);
+        when(cartService.getCart(any())).thenReturn(cart);
         when(order.getId()).thenReturn("12345");
     }
 
@@ -55,7 +60,7 @@ public class CheckoutPageServletTest {
     }
 
     @Test
-    public void testDoPost() throws IOException{
+    public void testDoPost() throws IOException, ServletException{
         servlet.doPost(request, response);
         verify(orderService).placeOrder(any(), any());
         verify(response).sendRedirect(any());

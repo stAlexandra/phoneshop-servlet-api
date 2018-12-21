@@ -1,8 +1,8 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.exception.NoSuchItemException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.exception.NoSuchProductException;
 import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImpl;
@@ -42,7 +42,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
             recentlyViewedService.addToList(product, recentlyViewedService.getList(request.getSession()));
 
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
-        } catch (NoSuchProductException | NumberFormatException e){
+        } catch (NoSuchItemException | NumberFormatException e){
             response.sendError(404);
         }
     }

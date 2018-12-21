@@ -3,7 +3,6 @@ package com.es.phoneshop.service.orderService;
 import com.es.phoneshop.dao.ArrayListOrderDao;
 import com.es.phoneshop.dao.OrderDao;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.exception.NotEnoughOrderDetailsException;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.model.order.OrderDetails;
 
@@ -11,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 public class OrderServiceImpl implements OrderService {
+    private OrderDao orderDao;
+
     private OrderServiceImpl() {
+        orderDao = ArrayListOrderDao.getInstance();
     }
 
     private static volatile OrderServiceImpl instance = null;
@@ -35,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDetails(details);
         order.setId(UUID.randomUUID().toString());
 
-        ArrayListOrderDao.getInstance().save(order);
+        orderDao.save(order);
 
         return order;
     }
@@ -46,24 +48,23 @@ public class OrderServiceImpl implements OrderService {
         int idIndex = uri.lastIndexOf("/");
         String id = uri.substring(idIndex + 1);
 
-        OrderDao orderDao = ArrayListOrderDao.getInstance();
         return orderDao.get(id);
     }
 
-    @Override
-    public OrderDetails getOrderDetails(HttpServletRequest request) {
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String deliveryAddress = request.getParameter("deliveryAddress");
-        String phone = request.getParameter("phone");
-        if (firstName.isEmpty() || lastName.isEmpty() || deliveryAddress.isEmpty() || phone.isEmpty()) {
-            throw new NotEnoughOrderDetailsException();
-        }
-        OrderDetails details = new OrderDetails();
-        details.setFirstName(firstName);
-        details.setLastName(lastName);
-        details.setDeliveryAddress(deliveryAddress);
-        details.setPhone(phone);
-        return details;
-    }
+//    @Override
+//    public OrderDetails getOrderDetails(HttpServletRequest request) {
+//        String firstName = request.getParameter("firstName");
+//        String lastName = request.getParameter("lastName");
+//        String deliveryAddress = request.getParameter("deliveryAddress");
+//        String phone = request.getParameter("phone");
+//        if (firstName.isEmpty() || lastName.isEmpty() || deliveryAddress.isEmpty() || phone.isEmpty()) {
+//            throw new NotEnoughOrderDetailsException();
+//        }
+//        OrderDetails details = new OrderDetails();
+//        details.setFirstName(firstName);
+//        details.setLastName(lastName);
+//        details.setDeliveryAddress(deliveryAddress);
+//        details.setPhone(phone);
+//        return details;
+//    }
 }

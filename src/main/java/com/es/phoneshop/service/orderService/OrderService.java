@@ -9,5 +9,4 @@ import javax.servlet.http.HttpServletRequest;
 public interface OrderService {
     Order getOrder(HttpServletRequest request);
     Order placeOrder(Cart cart, OrderDetails details);
-    OrderDetails getOrderDetails(HttpServletRequest request);
 }

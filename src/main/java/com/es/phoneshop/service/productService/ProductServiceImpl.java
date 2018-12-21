@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
+    private ProductDao productDao;
     private ProductServiceImpl() {
+        productDao = ArrayListProductDao.getInstance();
     }
 
     private static volatile ProductServiceImpl instance = null;
@@ -26,12 +28,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public Product getProduct(Long productId) throws NoSuchItemException {
-        ProductDao productDao = ArrayListProductDao.getInstance();
         return productDao.get(productId);
     }
 
     public Product getProduct(String productId) throws NumberFormatException, NoSuchItemException {
-        ProductDao productDao = ArrayListProductDao.getInstance();
         return productDao.get(Long.parseUnsignedLong(productId));
     }
 
@@ -41,12 +41,10 @@ public class ProductServiceImpl implements ProductService {
         String stringId = uri.substring(idIndex + 1);
         Long id = Long.parseLong(stringId);
 
-        ProductDao productDao = ArrayListProductDao.getInstance();
         return productDao.get(id);
     }
 
     public List<Product> getFilteredProducts(String query, String sortField, boolean sortOrder) {
-        ProductDao productDao = ArrayListProductDao.getInstance();
         return productDao.findProducts(query, sortField, sortOrder);
     }
 }
