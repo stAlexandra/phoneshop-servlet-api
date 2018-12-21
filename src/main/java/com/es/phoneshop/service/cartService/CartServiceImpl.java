@@ -5,7 +5,6 @@ import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.exception.NotEnoughStockException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -38,13 +37,6 @@ public class CartServiceImpl implements CartService {
             session.setAttribute(CART_ATTRIBUTE, cart);
         }
         return cart;
-    }
-
-
-    @Override
-    public Integer getItemQuantity(HttpServletRequest request, String quantityRequestParameter) throws NumberFormatException {
-        String quantityString = request.getParameter(quantityRequestParameter);
-        return Integer.parseUnsignedInt(quantityString);
     }
 
     @Override

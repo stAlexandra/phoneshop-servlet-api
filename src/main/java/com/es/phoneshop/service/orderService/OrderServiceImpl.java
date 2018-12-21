@@ -6,7 +6,6 @@ import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.model.order.OrderDetails;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 public class OrderServiceImpl implements OrderService {
@@ -43,28 +42,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrder(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        int idIndex = uri.lastIndexOf("/");
-        String id = uri.substring(idIndex + 1);
-
+    public Order getOrder(String id) {
         return orderDao.get(id);
     }
-
-//    @Override
-//    public OrderDetails getOrderDetails(HttpServletRequest request) {
-//        String firstName = request.getParameter("firstName");
-//        String lastName = request.getParameter("lastName");
-//        String deliveryAddress = request.getParameter("deliveryAddress");
-//        String phone = request.getParameter("phone");
-//        if (firstName.isEmpty() || lastName.isEmpty() || deliveryAddress.isEmpty() || phone.isEmpty()) {
-//            throw new NotEnoughOrderDetailsException();
-//        }
-//        OrderDetails details = new OrderDetails();
-//        details.setFirstName(firstName);
-//        details.setLastName(lastName);
-//        details.setDeliveryAddress(deliveryAddress);
-//        details.setPhone(phone);
-//        return details;
-//    }
 }

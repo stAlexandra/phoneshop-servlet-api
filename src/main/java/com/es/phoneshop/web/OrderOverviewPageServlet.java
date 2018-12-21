@@ -23,7 +23,11 @@ public class OrderOverviewPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Order order = orderService.getOrder(request);
+            String uri = request.getRequestURI();
+            int idIndex = uri.lastIndexOf("/");
+            String id = uri.substring(idIndex + 1);
+
+            Order order = orderService.getOrder(id);
             request.setAttribute("order", order);
             request.getRequestDispatcher("/WEB-INF/pages/orderOverview.jsp").forward(request, response);
 

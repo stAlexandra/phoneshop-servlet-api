@@ -35,7 +35,11 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Product product = productService.getProduct(request);
+            String uri = request.getRequestURI();
+            int idIndex = uri.lastIndexOf("/");
+            Long id = Long.parseLong(uri.substring(idIndex + 1));
+
+            Product product = productService.getProduct(id);
             request.setAttribute("product", product);
 
             request.setAttribute("viewedProducts", recentlyViewedService.getList(request.getSession()));
@@ -49,7 +53,11 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Product product = productService.getProduct(request);
+        String uri = request.getRequestURI();
+        int idIndex = uri.lastIndexOf("/");
+        Long id = Long.parseLong(uri.substring(idIndex + 1));
+
+        Product product = productService.getProduct(id);
         Cart cart = cartService.getCart(request.getSession());
 
         request.setAttribute("product", product);
@@ -57,7 +65,8 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
         Integer quantity = null;
         try {
-            quantity = cartService.getItemQuantity(request, "quantity");
+            String quantityString = request.getParameter("quantity");
+            quantity = Integer.parseUnsignedInt(quantityString);
         } catch (NumberFormatException e){
             request.setAttribute(QUANTITY_ERROR_ATTRIBUTE, "Not a number!");
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);

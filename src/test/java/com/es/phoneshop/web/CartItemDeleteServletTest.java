@@ -2,6 +2,7 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.productService.ProductService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,7 +29,12 @@ public class CartItemDeleteServletTest {
     @Mock
     private CartService cartService;
     @Mock
-    private ProductService  productService;
+    private ProductService productService;
+
+    @Before
+    public void setUp() {
+        when(request.getRequestURI()).thenReturn("/1");
+    }
 
     @Test
     public void testDeleted() throws IOException {

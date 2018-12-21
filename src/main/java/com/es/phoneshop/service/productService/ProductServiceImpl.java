@@ -4,7 +4,6 @@ import com.es.phoneshop.dao.ArrayListProductDao;
 import com.es.phoneshop.exception.NoSuchItemException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.dao.ProductDao;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
@@ -33,15 +32,6 @@ public class ProductServiceImpl implements ProductService {
 
     public Product getProduct(String productId) throws NumberFormatException, NoSuchItemException {
         return productDao.get(Long.parseUnsignedLong(productId));
-    }
-
-    public Product getProduct(HttpServletRequest request) throws NumberFormatException, NoSuchItemException {
-        String uri = request.getRequestURI();
-        int idIndex = uri.lastIndexOf("/");
-        String stringId = uri.substring(idIndex + 1);
-        Long id = Long.parseLong(stringId);
-
-        return productDao.get(id);
     }
 
     public List<Product> getFilteredProducts(String query, String sortField, boolean sortOrder) {

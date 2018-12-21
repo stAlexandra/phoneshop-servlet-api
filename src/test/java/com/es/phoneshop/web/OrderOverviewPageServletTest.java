@@ -38,6 +38,7 @@ public class OrderOverviewPageServletTest {
 
     @Before
     public void setUp() {
+        when(request.getRequestURI()).thenReturn("/1");
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
         when(orderService.getOrder(any())).thenReturn(order);
     }
