@@ -1,7 +1,6 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.dao.ArrayListOrderDao;
-import com.es.phoneshop.dao.OrderDao;
+import com.es.phoneshop.exception.NoSuchItemException;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.service.orderService.OrderService;
 import com.es.phoneshop.service.orderService.OrderServiceImpl;
@@ -23,8 +22,13 @@ public class OrderOverviewPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Order order = orderService.getOrder(request);
-        request.setAttribute("order", order);
-        request.getRequestDispatcher("/WEB-INF/pages/orderOverview.jsp").forward(request, response);
+        try {
+            Order order = orderService.getOrder(request);
+            request.setAttribute("order", order);
+            request.getRequestDispatcher("/WEB-INF/pages/orderOverview.jsp").forward(request, response);
+
+        } catch (NoSuchItemException e){
+            response.sendError(404);
+        }
     }
 }

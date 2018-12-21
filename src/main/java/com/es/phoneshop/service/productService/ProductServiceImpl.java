@@ -1,8 +1,8 @@
 package com.es.phoneshop.service.productService;
 
 import com.es.phoneshop.dao.ArrayListProductDao;
+import com.es.phoneshop.exception.NoSuchItemException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.exception.NoSuchProductException;
 import com.es.phoneshop.dao.ProductDao;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,24 +25,24 @@ public class ProductServiceImpl implements ProductService {
         return instance;
     }
 
-    public Product getProduct(Long productId) throws NoSuchProductException {
+    public Product getProduct(Long productId) throws NoSuchItemException {
         ProductDao productDao = ArrayListProductDao.getInstance();
-        return productDao.getProduct(productId);
+        return productDao.get(productId);
     }
 
-    public Product getProduct(String productId) throws NumberFormatException, NoSuchProductException {
+    public Product getProduct(String productId) throws NumberFormatException, NoSuchItemException {
         ProductDao productDao = ArrayListProductDao.getInstance();
-        return productDao.getProduct(Long.parseUnsignedLong(productId));
+        return productDao.get(Long.parseUnsignedLong(productId));
     }
 
-    public Product getProduct(HttpServletRequest request) throws NumberFormatException, NoSuchProductException {
+    public Product getProduct(HttpServletRequest request) throws NumberFormatException, NoSuchItemException {
         String uri = request.getRequestURI();
         int idIndex = uri.lastIndexOf("/");
         String stringId = uri.substring(idIndex + 1);
         Long id = Long.parseLong(stringId);
 
         ProductDao productDao = ArrayListProductDao.getInstance();
-        return productDao.getProduct(id);
+        return productDao.get(id);
     }
 
     public List<Product> getFilteredProducts(String query, String sortField, boolean sortOrder) {

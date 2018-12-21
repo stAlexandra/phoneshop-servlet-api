@@ -1,17 +1,20 @@
 package com.es.phoneshop.model.order;
 
+import com.es.phoneshop.model.Identifiable;
 import com.es.phoneshop.model.cart.Cart;
 
-public class Order {
+public class Order implements Identifiable<String> {
     private String secureId;
     private Cart cart;
     private OrderDetails details;
 
-    public String getSecureId() {
+    @Override
+    public String getId() {
         return secureId;
     }
 
-    public void setSecureId(String secureId) {
+    @Override
+    public void setId(String secureId) {
         this.secureId = secureId;
     }
 

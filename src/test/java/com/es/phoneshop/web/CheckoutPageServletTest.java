@@ -40,10 +40,10 @@ public class CheckoutPageServletTest {
     private Order order;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
         when(orderService.placeOrder(any(), any())).thenReturn(order);
-        when(order.getSecureId()).thenReturn("12345");
+        when(order.getId()).thenReturn("12345");
     }
 
     @Test

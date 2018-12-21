@@ -1,7 +1,7 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.exception.NoSuchItemException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.exception.NoSuchProductException;
 import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.productService.ProductServiceImpl;
@@ -63,7 +63,7 @@ public class ProductDetailsPageServletTest {
 
     @Test
     public void testDoGetProductNotExist() throws ServletException, IOException {
-        when(productService.getProduct(request)).thenThrow(NoSuchProductException.class);
+        when(productService.getProduct(request)).thenThrow(NoSuchItemException.class);
 
         servlet.doGet(request, response);
 

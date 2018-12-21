@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setCart(new Cart(cart));
         order.setDetails(details);
-        order.setSecureId(UUID.randomUUID().toString());
+        order.setId(UUID.randomUUID().toString());
 
         ArrayListOrderDao.getInstance().save(order);
 
@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
         String id = uri.substring(idIndex + 1);
 
         OrderDao orderDao = ArrayListOrderDao.getInstance();
-        return orderDao.getOrder(id);
+        return orderDao.get(id);
     }
 
     @Override

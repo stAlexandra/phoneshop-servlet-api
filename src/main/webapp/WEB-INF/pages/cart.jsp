@@ -1,10 +1,13 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <tags:master pageTitle="Cart">
     <jsp:useBean id="cart" type="com.es.phoneshop.model.cart.Cart" scope="request"/>
+    <c:if test="${empty cart.cartItems}">
+        <h2>Cart is empty! You could choose phones <a href="<c:url value="/products"/>">here</a></h2>
+    </c:if>
     <c:if test="${not empty cart.cartItems}">
         <form method="post" action="${pageContext.servletContext.contextPath}/cart">
             <button>Update</button>
@@ -63,17 +66,18 @@
                         </td>
                     </tr>
                 </c:forEach>
-                <tr></tr>
-                <tr>Total:</tr>
-                <tr><fmt:formatNumber value="${cart.totalPrice}" type="currency"
-                                      currencySymbol="${cart.currency.symbol}"/></tr>
+                <tr>
+                    <td></td>
+                    <td>Total:</td>
+                    <td><fmt:formatNumber value="${cart.totalPrice}" type="currency"
+                                          currencySymbol="${cart.currency.symbol}"/></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </table>
             <br>
             <button>Update</button>
         </form>
         <h3><a href="<c:url value="/checkout"/>">Checkout</a></h3>
-    </c:if>
-    <c:if test="${empty cart.cartItems}">
-        <h2>Cart is empty! You could choose phones <a href="<c:url value="/products"/>">here</a></h2>
     </c:if>
 </tags:master>

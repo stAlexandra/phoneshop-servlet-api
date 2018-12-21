@@ -1,10 +1,12 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.model.Identifiable;
+
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Objects;
 
-public class Product {
+public class Product implements Identifiable<Long> {
     private Long id;
     private String code;
     private String description;
@@ -28,10 +30,12 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
