@@ -93,16 +93,14 @@ public class Product implements Identifiable<Long> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return getStock() == product.getStock() &&
-                Objects.equals(getId(), product.getId()) &&
+        return Objects.equals(getId(), product.getId()) &&
                 Objects.equals(getCode(), product.getCode()) &&
-                Objects.equals(getDescription(), product.getDescription()) &&
                 Objects.equals(getPrice(), product.getPrice()) &&
                 Objects.equals(getCurrency(), product.getCurrency());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCode(), getDescription(), getPrice(), getCurrency(), getStock());
+        return Objects.hash(getId(), getCode(), getPrice(), getCurrency());
     }
 }

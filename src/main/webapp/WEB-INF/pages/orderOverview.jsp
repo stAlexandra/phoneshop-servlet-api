@@ -36,9 +36,10 @@
             <td>Total:</td>
             <td class="price"><fmt:formatNumber value="${order.cart.totalPrice}" type="currency"
                                                 currencySymbol="${order.cart.currency.symbol}"/></td>
+            <td></td>
         </tr>
     </table>
-    <h3>Contact details: </h3>
+    <h3>Order details: </h3>
     First name: ${order.details.firstName}
     <br>
     Last name: ${order.details.lastName}

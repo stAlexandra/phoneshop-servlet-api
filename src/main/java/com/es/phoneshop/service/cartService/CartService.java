@@ -11,5 +11,6 @@ public interface CartService {
     void addToCart(Cart cart, Product product, Integer quantity) throws NotEnoughStockException;
     void updateCart(Cart cart, Product product, Integer quantity) throws NotEnoughStockException;
     boolean deleteItem(Cart cart, Product product);
+    void clearCart(Cart cart);
     void recalculateCart(Cart cart);
 }

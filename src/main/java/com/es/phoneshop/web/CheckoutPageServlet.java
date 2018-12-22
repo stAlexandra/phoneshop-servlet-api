@@ -41,6 +41,7 @@ public class CheckoutPageServlet extends HttpServlet {
             Order order = orderService.placeOrder(cart, details);
 
             response.sendRedirect(request.getContextPath() + "/order/overview/" + order.getId());
+            cartService.clearCart(cart);
             return;
         } catch (NotEnoughOrderDetailsException e){
             request.setAttribute("error", "Missed order details!");

@@ -9,4 +9,5 @@ public interface ProductService {
     Product getProduct(Long productId) throws NoSuchItemException;
     Product getProduct(String productId) throws NumberFormatException, NoSuchItemException;
     List<Product> getFilteredProducts(String query, String sortField, boolean sortOrder);
+    boolean sortAscending(String sortOrder);
 }

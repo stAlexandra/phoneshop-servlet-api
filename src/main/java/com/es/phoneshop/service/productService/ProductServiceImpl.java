@@ -26,15 +26,23 @@ public class ProductServiceImpl implements ProductService {
         return instance;
     }
 
+    @Override
     public Product getProduct(Long productId) throws NoSuchItemException {
         return productDao.get(productId);
     }
 
+    @Override
     public Product getProduct(String productId) throws NumberFormatException, NoSuchItemException {
-        return productDao.get(Long.parseUnsignedLong(productId));
+        return productDao.get(Long.parseLong(productId));
     }
 
+    @Override
     public List<Product> getFilteredProducts(String query, String sortField, boolean sortOrder) {
         return productDao.findProducts(query, sortField, sortOrder);
+    }
+
+    @Override
+    public boolean sortAscending(String sortOrder){
+        return "asc".equals(sortOrder);
     }
 }

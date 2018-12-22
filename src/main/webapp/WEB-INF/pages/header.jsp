@@ -5,7 +5,7 @@
         <img src="<c:url value="/images/logo.svg"/>">
         PhoneShop
     </a>
-    <c:if test="${param.showMiniCart == true}">
+    <c:if test="${param.showMiniCart}">
         <jsp:include page="minicart.jsp"/>
     </c:if>
 </header>

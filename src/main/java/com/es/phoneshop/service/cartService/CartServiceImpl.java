@@ -77,6 +77,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public void clearCart(Cart cart){
+        cart.getCartItems().clear();
+        recalculateCart(cart);
+    }
+
+    @Override
     public void recalculateCart(Cart cart){
         BigDecimal totalPrice = cart.getCartItems().stream()
                 .map(cartItem -> cartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))

@@ -1,10 +1,7 @@
 package com.es.phoneshop.model.cart;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Cart {
     private List<CartItem> items;
@@ -19,10 +16,13 @@ public class Cart {
 
     public Cart(Cart otherCart){
         this();
-        for(CartItem item : otherCart.items){
-            this.items.add(new CartItem(item.getProduct(), item.getQuantity()));
+        if(otherCart != null) {
+            for (CartItem item : otherCart.items) {
+                this.items.add(new CartItem(item.getProduct(), item.getQuantity()));
+            }
+            this.totalPrice = otherCart.totalPrice;
+            this.currency = otherCart.currency;
         }
-        this.totalPrice = otherCart.totalPrice;
     }
 
     public List<CartItem> getCartItems() {
@@ -47,6 +47,21 @@ public class Cart {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cart cart = (Cart) o;
+        return Objects.equals(items, cart.items) &&
+                Objects.equals(getTotalPrice(), cart.getTotalPrice()) &&
+                Objects.equals(getCurrency(), cart.getCurrency());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(items, getTotalPrice(), getCurrency());
     }
 
     @Override

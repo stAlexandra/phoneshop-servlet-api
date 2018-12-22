@@ -4,7 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="product" type="com.es.phoneshop.model.product.Product" scope="request"/>
-<tags:master pageTitle="${product.description}" pageClass="product-details" showMiniCart="true">
+<tags:master pageTitle="${product.description}" pageClass="product-details" showMiniCart="${true}">
     <br>
     <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
     <br>
