@@ -1,14 +1,15 @@
 package com.es.phoneshop.service.productService;
 
-import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.dao.ArrayListProductDao;
+import com.es.phoneshop.exception.NoSuchItemException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.exception.NoSuchProductException;
-import com.es.phoneshop.model.product.ProductDao;
-import javax.servlet.http.HttpServletRequest;
+import com.es.phoneshop.dao.ProductDao;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
+    private ProductDao productDao;
     private ProductServiceImpl() {
+        productDao = ArrayListProductDao.getInstance();
     }
 
     private static volatile ProductServiceImpl instance = null;
@@ -25,28 +26,23 @@ public class ProductServiceImpl implements ProductService {
         return instance;
     }
 
-    public Product getProduct(Long productId) throws NoSuchProductException {
-        ProductDao productDao = ArrayListProductDao.getInstance();
-        return productDao.getProduct(productId);
+    @Override
+    public Product getProduct(Long productId) throws NoSuchItemException {
+        return productDao.get(productId);
     }
 
-    public Product getProduct(String productId) throws NumberFormatException, NoSuchProductException {
-        ProductDao productDao = ArrayListProductDao.getInstance();
-        return productDao.getProduct(Long.parseUnsignedLong(productId));
+    @Override
+    public Product getProduct(String productId) throws NumberFormatException, NoSuchItemException {
+        return productDao.get(Long.parseLong(productId));
     }
 
-    public Product getProduct(HttpServletRequest request) throws NumberFormatException, NoSuchProductException {
-        String uri = request.getRequestURI();
-        int idIndex = uri.lastIndexOf("/");
-        String stringId = uri.substring(idIndex + 1);
-        Long id = Long.parseLong(stringId);
-
-        ProductDao productDao = ArrayListProductDao.getInstance();
-        return productDao.getProduct(id);
-    }
-
+    @Override
     public List<Product> getFilteredProducts(String query, String sortField, boolean sortOrder) {
-        ProductDao productDao = ArrayListProductDao.getInstance();
         return productDao.findProducts(query, sortField, sortOrder);
+    }
+
+    @Override
+    public boolean sortAscending(String sortOrder){
+        return "asc".equals(sortOrder);
     }
 }

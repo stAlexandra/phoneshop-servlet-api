@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<tags:master pageTitle="Product List" pageClass="product-list" showMiniCart="true">
+<tags:master pageTitle="Product List" pageClass="product-list" showMiniCart="${true}">
 
     <jsp:useBean id="products" type="java.util.ArrayList" scope="request"/>
     <p>

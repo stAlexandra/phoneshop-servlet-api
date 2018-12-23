@@ -12,7 +12,7 @@
     <jsp:include page="/WEB-INF/pages/header.jsp"/>
 </div>
 <main>
-    <h2 class="error">Error: product not found!</h2>
+    <h2 class="error">Not found!</h2>
 </main>
 <div>
     <jsp:include page="/WEB-INF/pages/footer.jsp"/>

@@ -28,9 +28,7 @@ public class ProductListPageServlet extends HttpServlet {
         String sortField = request.getParameter("sort");
         String sortOrderString = request.getParameter("order");
 
-        boolean sortOrder = "asc".equals(sortOrderString);
-
-        request.setAttribute("products", productService.getFilteredProducts(query, sortField, sortOrder));
+        request.setAttribute("products", productService.getFilteredProducts(query, sortField, productService.sortAscending(sortOrderString)));
         request.setAttribute("cart", cartService.getCart(request.getSession()));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }

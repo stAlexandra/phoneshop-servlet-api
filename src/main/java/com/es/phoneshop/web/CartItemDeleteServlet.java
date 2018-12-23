@@ -4,6 +4,7 @@ import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.cartService.CartService;
 import com.es.phoneshop.service.cartService.CartServiceImpl;
+import com.es.phoneshop.service.productService.ProductService;
 import com.es.phoneshop.service.productService.ProductServiceImpl;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CartItemDeleteServlet extends HttpServlet {
-    private ProductServiceImpl productService;
+    private ProductService productService;
     private CartService cartService;
 
     @Override
@@ -25,7 +26,11 @@ public class CartItemDeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Product product = productService.getProduct(request);
+        String uri = request.getRequestURI();
+        int idIndex = uri.lastIndexOf("/");
+        Long id = Long.parseLong(uri.substring(idIndex + 1));
+
+        Product product = productService.getProduct(id);
         Cart cart = cartService.getCart(request.getSession());
 
         boolean isDeleted = cartService.deleteItem(cart, product);

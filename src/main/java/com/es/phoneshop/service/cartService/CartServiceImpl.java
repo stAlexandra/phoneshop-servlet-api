@@ -3,9 +3,8 @@ package com.es.phoneshop.service.cartService;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
-import com.es.phoneshop.model.exception.NotEnoughStockException;
+import com.es.phoneshop.exception.NotEnoughStockException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -38,13 +37,6 @@ public class CartServiceImpl implements CartService {
             session.setAttribute(CART_ATTRIBUTE, cart);
         }
         return cart;
-    }
-
-
-    @Override
-    public Integer getItemQuantity(HttpServletRequest request, String quantityRequestParameter) throws NumberFormatException {
-        String quantityString = request.getParameter(quantityRequestParameter);
-        return Integer.parseUnsignedInt(quantityString);
     }
 
     @Override
@@ -82,6 +74,12 @@ public class CartServiceImpl implements CartService {
         boolean deleted = cart.getCartItems().removeIf(item -> item.getProduct().getId().equals(product.getId()));
         recalculateCart(cart);
         return deleted;
+    }
+
+    @Override
+    public void clearCart(Cart cart){
+        cart.getCartItems().clear();
+        recalculateCart(cart);
     }
 
     @Override

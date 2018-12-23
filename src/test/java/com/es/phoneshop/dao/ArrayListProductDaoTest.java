@@ -1,6 +1,7 @@
-package com.es.phoneshop.model.product;
+package com.es.phoneshop.dao;
 
-import com.es.phoneshop.model.exception.NoSuchProductException;
+import com.es.phoneshop.exception.NoSuchItemException;
+import com.es.phoneshop.model.product.Product;
 import org.junit.*;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 public class ArrayListProductDaoTest
 {
     private ArrayListProductDao productDao;
+    private int initSize;
 
     @Before
     public void setUp() {
@@ -26,6 +28,7 @@ public class ArrayListProductDaoTest
         productList.add(new Product(3L, "sgs3", "Samsung Galaxy S III", new BigDecimal(300), usd, 5, "https"));
         productList.add(new Product(4L, "iphone", "Apple iPhone", new BigDecimal(200), usd, 10, "https"));
 
+        initSize = productList.size();
         productList.forEach(product -> productDao.save(product));
     }
 
@@ -42,7 +45,7 @@ public class ArrayListProductDaoTest
 
     @Test
     public void testFindProducts(){
-        assertEquals(4, productDao.findProducts("", "", false).size());
+        assertEquals(initSize, productDao.findProducts("", "", false).size());
     }
 
     @Test
@@ -64,13 +67,13 @@ public class ArrayListProductDaoTest
     public void testSaveEmptyProduct(){
         Product product = new Product();
         productDao.save(product);
-        assertEquals(4, productDao.findProducts("", "" , false).size());
+        assertEquals(initSize, productDao.findProducts("", "" , false).size());
     }
 
     @Test
     public void testSaveValidProduct(){
         productDao.save(new Product(123L, "str", "smk", new BigDecimal(200), Currency.getInstance("USD"), 100, "https"));
-        assertEquals(5, productDao.findProducts("", "" ,false).size());
+        assertEquals(initSize + 1, productDao.findProducts("", "" ,false).size());
     }
 
     @Test(expected = RuntimeException.class)
@@ -81,26 +84,26 @@ public class ArrayListProductDaoTest
     @Test
     public void testGetProduct(){
         long id = 2L;
-        Product product = productDao.getProduct(id);
+        Product product = productDao.get(id);
         assertNotNull(product);
     }
 
-    @Test(expected = NoSuchProductException.class)
+    @Test(expected = NoSuchItemException.class)
     public void testGetProductNotExist(){
         long id = 999L;
-        productDao.getProduct(id);
+        productDao.get(id);
     }
 
-    @Test(expected = NoSuchProductException.class)
+    @Test(expected = NoSuchItemException.class)
     public void testDeleteProduct(){
-        int previousSize = productDao.findProducts("", "", false).size();
+       // int previousSize = productDao.findProducts("", "", false).size();
         long id = 4L;
         productDao.delete(id);
-        assertEquals(previousSize - 1, productDao.findProducts("", "", false).size());
-        productDao.getProduct(id);
+        assertEquals(initSize - 1, productDao.findProducts("", "", false).size());
+        productDao.get(id);
     }
 
-    @Test(expected = NoSuchProductException.class)
+    @Test(expected = NoSuchItemException.class)
     public void testDeleteProductNotExist(){
         long id = 888L;
         productDao.delete(id);

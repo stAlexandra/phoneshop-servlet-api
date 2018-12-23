@@ -1,11 +1,12 @@
 package com.es.phoneshop.model.product;
 
-import java.io.Serializable;
+import com.es.phoneshop.model.Identifiable;
+
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Objects;
 
-public class Product implements Serializable {
+public class Product implements Identifiable<Long> {
     private Long id;
     private String code;
     private String description;
@@ -29,10 +30,12 @@ public class Product implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -90,16 +93,14 @@ public class Product implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return getStock() == product.getStock() &&
-                Objects.equals(getId(), product.getId()) &&
+        return Objects.equals(getId(), product.getId()) &&
                 Objects.equals(getCode(), product.getCode()) &&
-                Objects.equals(getDescription(), product.getDescription()) &&
                 Objects.equals(getPrice(), product.getPrice()) &&
                 Objects.equals(getCurrency(), product.getCurrency());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCode(), getDescription(), getPrice(), getCurrency(), getStock());
+        return Objects.hash(getId(), getCode(), getPrice(), getCurrency());
     }
 }

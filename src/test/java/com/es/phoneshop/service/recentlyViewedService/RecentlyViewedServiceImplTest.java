@@ -1,9 +1,7 @@
-package com.es.phoneshop.service;
+package com.es.phoneshop.service.recentlyViewedService;
 
-import com.es.phoneshop.model.LimitedSizeList;
+import com.es.phoneshop.model.cart.LimitedSizeList;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.recentlyViewedService.RecentlyViewedService;
-import com.es.phoneshop.service.recentlyViewedService.RecentlyViewedServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
